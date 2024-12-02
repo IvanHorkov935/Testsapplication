@@ -1,0 +1,35 @@
+﻿<Page x:Class="Tests_application.Pages.MainMenu_Student"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Tests_application.Pages" xmlns:local1="clr-namespace:Tests_application.Converters"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MainMenu_Student">
+
+    <Page.Resources>
+        <local1:PercentConvert x:Key="PercentConvert"/>
+    </Page.Resources>
+
+    <Grid Background="White">
+        <Button Width="200" Height="50" VerticalAlignment="Top" Margin="10,10,590,0" Content="Выйти из аккаунта" FontSize="18" Click="Button_Click"/>
+        <TextBlock Width="200" Height="30" VerticalAlignment="Top" Margin="240,10,360,0" x:Name="UserName" FontSize="18"/>
+        <TextBlock Width="200" Height="30" VerticalAlignment="Top" Margin="445,10,155,0" x:Name="UserGroup" FontSize="18"/>
+
+        <ListBox Margin="0,84,18,84" x:Name="TestsListBox">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Border BorderThickness="1" BorderBrush="Black" Height="100" Width="700">
+                            <TextBlock Width="300" Height="50" Text="{Binding Path=Tests.Name}" HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="18"/>
+                        </Border>
+                        <Border x:Name="result" BorderThickness="1" BorderBrush="Black" Height="100" Width="100" HorizontalAlignment="Left" Margin="640,0,0,0">
+                            <TextBlock FontSize="18" Width="100" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Per_Complete, Converter={StaticResource PercentConvert}}" TextAlignment="Center" Height="30" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Page>

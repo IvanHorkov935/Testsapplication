@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e340cdf9e4f946749fbfc757ea57bd59" Name="Diagram1">
+        <EntityTypeShape EntityType="DB_Prog1Model.Answers" Width="1.5" PointX="10.5" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Groups" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Groups_Tests" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Questions" Width="1.5" PointX="8.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Results" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.sysdiagrams" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Testing" Width="1.5" PointX="10.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Tests" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Users" Width="1.5" PointX="6" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DB_Prog1Model.Users_Types" Width="1.5" PointX="3.75" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Answers_Questions" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Groups_Tests_Groups" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Users_Groups" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Groups_Tests_Tests" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Questions_Tests" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Testing_Questions" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Results_Tests" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Results_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Testing_Results" ManuallyRouted="false" />
+        <AssociationConnector Association="DB_Prog1Model.FK_Users_Users_Types" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

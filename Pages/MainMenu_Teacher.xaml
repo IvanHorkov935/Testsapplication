@@ -1,0 +1,55 @@
+﻿<Page x:Class="Tests_application.Pages.MainMenu_Teacher"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Tests_application.Pages" xmlns:local1="clr-namespace:Tests_application.Converters"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MainMenu_Teacher">
+
+    <Page.Resources>
+        <local1:PercentConvert x:Key="PercentConvert"/>
+        <local1:NameConverter x:Key="NameConverter"/>
+    </Page.Resources>
+
+    <Grid Background="White">
+        <Button Width="200" Height="50" VerticalAlignment="Top" Margin="10,10,590,0" Content="Выйти из аккаунта" FontSize="18" Click="Button_Click"/>
+        <TextBlock Text="Вы в главном меню учителя" TextAlignment="Center" Margin="226,14,226,390" FontSize="24"/>
+        <Button Width="200" Height="50" Margin="590,10,10,390" Content="Создать тест" FontSize="24" Click="Button_Click_1"/>
+
+        <ListBox ItemsSource="{Binding UsersCollection}"
+                 SelectedItem="{Binding SelectedUser}" Margin="0,65,323,50">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock FontSize="18" Text="{Binding Path=Full_Name}" />
+                        <TextBlock Text="{Binding Path=Login}" />
+                        <TextBlock Text="{Binding Path=Password}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel DataContext="{Binding SelectedUser}" Margin="482,65,10,242">
+            <TextBlock Text="Выбранный ученик" Margin="0,0,0,10" />
+            <TextBlock Text="ФИО" />
+            <TextBlock Text="{Binding Full_Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
+            <TextBlock Text="№ Группы" />
+            <TextBlock Text="{Binding ID_Group, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
+            <TextBlock Text="Логин" />
+            <TextBlock Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
+        </StackPanel>
+        <ListBox Height="192" x:Name="results" ItemsSource="{Binding UserResultsCollection, UpdateSourceTrigger=PropertyChanged}" Margin="482,208,10,50">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Название теста:" Margin="0,0,3,0" />
+                        <TextBlock Text="{Binding ID_Test, Converter={StaticResource NameConverter}}" Margin="0,0,8,0" />
+                        <TextBlock Text="Процент выполнения:" Margin="0,0,3,0" />
+                        <TextBlock Text="{Binding Per_Complete, Converter={StaticResource PercentConvert}}" Margin="0,0,8,0" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Page>

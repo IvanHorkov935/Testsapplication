@@ -1,0 +1,31 @@
+﻿<Page x:Class="Tests_application.Maket"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Tests_application"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Maket">
+
+    <Grid Background="White" Width="700" Height="150">
+        <Border BorderBrush="Black" BorderThickness="2" Margin="2,2,461,2">
+            <StackPanel Margin="0,0,0,0" Orientation="Vertical">
+                <TextBlock Text="Вопрос:" Height="29" TextAlignment="Center" Margin="0,20,0,0" FontSize="20"/>
+                <TextBox Height="99" TextWrapping="WrapWithOverflow" FontSize="18" Text="{Binding Ques, Mode=OneWayToSource}"/>
+            </StackPanel>
+        </Border>
+        <StackPanel Margin="239,0,233,0">
+            <RadioButton Height="24" Content="1-й ответ" Margin="0,5,0,0" FontSize="14" HorizontalAlignment="Center" GroupName="Corr"/>
+            <TextBox Height="42" FontSize="14" Text="{Binding Ans1, Mode=OneWayToSource}"/>
+            <RadioButton Height="24" Content="2-й ответ" Margin="0,0,0,0" FontSize="14" HorizontalAlignment="Center" GroupName="Corr"/>
+            <TextBox Height="42" FontSize="14" Text="{Binding Ans2, Mode=OneWayToSource}"/>
+        </StackPanel>
+        <StackPanel Margin="472,0,0,4">
+            <RadioButton Height="24" Content="3-й ответ" Margin="0,5,0,0" FontSize="14" HorizontalAlignment="Center" GroupName="Corr"/>
+            <TextBox Height="42" FontSize="14" Text="{Binding Ans3, Mode=OneWayToSource}"/>
+            <RadioButton Height="24" Content="4-й ответ" Margin="0,0,0,0" FontSize="14" HorizontalAlignment="Center" GroupName="Corr"/>
+            <TextBox Height="42" FontSize="14" Text="{Binding Ans4, Mode=OneWayToSource}"/>
+        </StackPanel>
+    </Grid>
+</Page>

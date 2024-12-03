@@ -23,23 +23,59 @@ namespace Tests_application.Pages
         public AddUser()
         {
             InitializeComponent();
+
+            Users user = NewUser;
         }
 
+        public Users newUser = new Users();
         public Users NewUser
         {
-            get {
-                return new Users
-                {
-                    Login = t1.Text,
-                    Password = t2.Text,
-                    ID_Group = 7,
-                    ID_Type = 0, //!!!
-                    Full_Name = t3.Text,
-                }; }
+            get
+            {
+                return newUser;
+            }
+            set
+            {
+                newUser.ID_Type = value.ID_Type;
+            }
         }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
+            if(newUser.ID_Type != 0 && t1.Text != null && t2.Text != null && t3.Text != null)
+            {
+                newUser.Login = t1.Text;
+                newUser.Password = t2.Text;
+                newUser.ID_Group = 7;
+                newUser.Full_Name = t3.Text;
+                
+                DialogResult = true;
+            }
+            else
+            {
+                MessageBox.Show("Заполните все поля");
+            }
+        }
+
+        private void Combo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            if (comboBox != null && comboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string selectedValue = selectedItem.Content.ToString();
+
+                switch (selectedValue)
+                {
+                    case "Админ":
+                        newUser = new Users() { ID_Type = 1};
+                        break;
+                    case "Учитель":
+                        newUser = new Users() { ID_Type = 2 };
+                        break;
+                    case "Ученик":
+                        newUser = new Users() { ID_Type = 3 };
+                        break;
+                }
+            }
         }
     }
 }

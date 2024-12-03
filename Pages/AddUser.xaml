@@ -23,8 +23,10 @@
         <TextBox Margin="6,95,84,3" Width="170" Height="20" Grid.Column="1" x:Name="t3"/>
 
         <TextBlock Margin="151,118,259,97" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="Роль пользователя"/>
-        <ComboBox Margin="6,2,150,97" Grid.Column="1" Grid.Row="1">
-            
+        <ComboBox Margin="6,2,150,97" Grid.Column="1" Grid.Row="1" x:Name="Combo" SelectionChanged="Combo_SelectionChanged">
+            <ComboBoxItem Content="Админ"/>
+            <ComboBoxItem Content="Учитель"/>
+            <ComboBoxItem Content="Ученик"/>
         </ComboBox>
 
         <WrapPanel HorizontalAlignment="Right"  Width="140" Grid.Column="1" Margin="0,94,10,0" Grid.Row="1">

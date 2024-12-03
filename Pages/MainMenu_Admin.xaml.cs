@@ -48,6 +48,7 @@ namespace Tests_application.Pages
         {
             Contain.users.Clear();
             Groups group = GroupListBox.SelectedItem as Groups;
+            if (group == null) { return; }
             AddMembers.IsEnabled = true;
             Contain.CurrentGroup = group;
             if (group.ID == 1 || group.ID == 7)
@@ -96,7 +97,10 @@ namespace Tests_application.Pages
 
         private void AddMembers_Click(object sender, RoutedEventArgs e)
         {
-            Helper.frame.Navigate(new AddMemders());
+            Groups a = (Groups)GroupListBox.SelectedItem;
+            Contain.groups.Clear();
+            Contain.users.Clear();
+            Helper.frame.Navigate(new AddMemders(a.ID));
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -104,11 +108,13 @@ namespace Tests_application.Pages
             AddUser h = new AddUser();
             if (h.ShowDialog() == true)
             {
-
+                //Contain.users.Add(h.newUser);
+                Helper.connect.Users.Add(h.newUser);
+                Helper.connect.SaveChanges();
             }
             else
             {
-                Helper.connect.Users.Add(h.NewUser);
+                //MessageBox.Show("non");
             }
         }
     }

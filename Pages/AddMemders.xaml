@@ -9,22 +9,35 @@
       Title="AddMemders">
 
     <Grid Background="White" Height="450">
-        <Button Margin="10,10,642,390" Content="Назад" FontSize="22"/>
-        <StackPanel Margin="242,10,220,390" Orientation="Horizontal">
-            <TextBlock Width="93" Text="Группа:" TextAlignment="Center" Height="28" FontSize="18"/>
-            <TextBlock Width="76" FontSize="18" Height="28" TextAlignment="Left" Text="{Binding}"/>
+        <Button Margin="10,10,642,390" Content="Назад" FontSize="22" Click="Button_Click"/>
+        <StackPanel Margin="316,10,326,390" Orientation="Horizontal" x:Name="GroupName">
+            <TextBlock Width="83" Text="Группа:" TextAlignment="Center" Height="28" FontSize="18"/>
+            <TextBlock Width="51" FontSize="18" Height="28" TextAlignment="Left" Text="{Binding}"/>
         </StackPanel>
-        <Button Height="50" Margin="644,10,10,390" Content="Сохранить" FontSize="20"/>
+        <Button Height="50" Margin="644,10,10,390" Content="Сохранить" FontSize="20" Click="Button_Click_1"/>
 
-        <ComboBox Margin="625,88,10,331"/>
-        <TextBlock Margin="514,92,180,335" Text="Руководитель:" FontSize="16"/>
+        <ComboBox Margin="604,84,31,335" x:Name="combo" SelectionChanged="combo_SelectionChanged" SelectedValue="{Binding ID}" DisplayMemberPath="Full_Name" SelectedValuePath="ID"/>
+        <TextBlock Margin="493,92,201,335" Text="Руководитель:" FontSize="16"/>
         <TextBlock Margin="10,88,642,335" Text="Нераспределенные:" FontSize="16"/>
 
-        <ListBox Margin="10,120,482,10" x:Name="ListUnallocated">
+        <Image Margin="352,225,352,140" Source="Resourses/free-icon-two-arrows-pointing-opposite-sides-60671.png"/>
+
+        <ListBox Margin="10,120,482,10" x:Name="ListUnallocated" SelectionChanged="ListUnallocated_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5" Orientation="Horizontal">
-                        <TextBlock Text="ФИО:" Margin="3" FontSize="14" />
+                        <TextBlock Text="ФИО ученика:" Margin="3" FontSize="14" />
+                        <TextBlock Text="{Binding Full_Name}" Margin="3" FontSize="14" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListBox Margin="482,120,10,10" x:Name="ListCurrent" SelectionChanged="ListCurrent_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock Text="ФИО ученика:" Margin="3" FontSize="14" />
                         <TextBlock Text="{Binding Full_Name}" Margin="3" FontSize="14" />
                     </StackPanel>
                 </DataTemplate>

@@ -36,14 +36,23 @@ namespace Tests_application.Pages
 
             Contain2.IDGroup = idgroup;
 
+            //--------------------------------------------------------------------- && x.ID_Type == 3
+            var a1 = Helper.connect.Users.Where(x => x.ID_Group == Contain2.IDGroup).ToList().AsQueryable();
+            foreach (Users u in a1)
+            {
+                Contain2.AddedUsers.Add(u);
+            }
             ListCurrent.ItemsSource = Contain2.AddedUsers;
 
-            combo.ItemsSource = Helper.connect.Users.Where(x => x.ID_Group == 7 && x.ID_Type == 2).ToList();
+            //---------------------------------------------------------------------
+
+            combo.ItemsSource = Contain2.AddedUsers.Where(x => x.ID_Type == 2).ToList();
+
             GroupName.DataContext = Helper.connect.Groups.Where(x => x.ID == idgroup).FirstOrDefault().Name;
 
-            //ListUnallocated.ItemsSource = Helper.connect.Users.Where(x => x.ID_Group == 7 && x.ID_Type == 3).ToList();
-            var a = Helper.connect.Users.Where(x => x.ID_Group == 7 && x.ID_Type == 3).ToList().AsQueryable();
-            foreach(Users u in a)
+            //----------------------------------------------------------------------------
+            var a2 = Helper.connect.Users.Where(x => x.ID_Group == 7).ToList().AsQueryable();
+            foreach(Users u in a2)
             {
                 Contain2.UnknownUsers.Add(u);
             }
@@ -53,6 +62,7 @@ namespace Tests_application.Pages
         private void combo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
+            if (comboBox.SelectedValue == null) { return; }
             NumTeach = (int)comboBox.SelectedValue;
         }
 
@@ -62,6 +72,7 @@ namespace Tests_application.Pages
             if(user == null) {  return; }
             Contain2.UnknownUsers.Remove(user);
             Contain2.AddedUsers.Add(user);
+            combo.ItemsSource = Contain2.AddedUsers.Where(x => x.ID_Type == 2).ToList();
         }
 
         private void ListCurrent_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -70,7 +81,8 @@ namespace Tests_application.Pages
             if (user == null) { return; }
             Contain2.UnknownUsers.Add(user);
             Contain2.AddedUsers.Remove(user);
-            
+            combo.ItemsSource = Contain2.AddedUsers.Where(x => x.ID_Type == 2).ToList();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -82,12 +94,18 @@ namespace Tests_application.Pages
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            if(Contain2.AddedUsers.Where(x => x.ID_Type == 2).Count() > 1) { MessageBox.Show("В одной группе может быть только 1 учитель"); return; }
+            if(combo.SelectedItem == null) { MessageBox.Show("Выберите руководителя"); return; }
             Users a = (Users)combo.SelectedItem;
             Helper.connect.Users.Where(x => x.ID == a.ID).FirstOrDefault().ID_Group = Contain2.IDGroup;
             foreach (var user in Contain2.AddedUsers)
             {
-                Helper.connect.Users.Where(x => x.ID ==  user.ID).FirstOrDefault().ID_Group = Contain2.IDGroup;
+                Helper.connect.Users.Where(x => x.ID == user.ID).FirstOrDefault().ID_Group = Contain2.IDGroup;
                 
+            }
+            foreach (var user in Contain2.UnknownUsers)
+            {
+                Helper.connect.Users.Where(x => x.ID == user.ID).FirstOrDefault().ID_Group = 7;
             }
             Helper.connect.SaveChanges();
             Helper.frame.Navigate(new MainMenu_Admin());

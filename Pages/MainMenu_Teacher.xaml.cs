@@ -21,11 +21,11 @@ namespace Tests_application.Pages
     /// </summary>
     public partial class MainMenu_Teacher : Page
     {
-        public MainMenu_Teacher()
+        public MainMenu_Teacher(int IDGroup)
         {
             InitializeComponent();
 
-            DataContext = new ApplicationViewModel();
+            DataContext = new ApplicationViewModel(IDGroup);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

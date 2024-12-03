@@ -29,7 +29,7 @@ namespace Tests_application.Pages
         public string Ans4 { get; set; }
         public int CorrNum { get; set; }
     }
-    class Contains
+    class ContainsRed
     {
         public static int Counter = 0;
         public static ObservableCollection<Exercise> content = new ObservableCollection<Exercise>() {};
@@ -42,12 +42,12 @@ namespace Tests_application.Pages
         {
             InitializeComponent();
 
-            TestsListBox.ItemsSource = Contains.content;
+            TestsListBox.ItemsSource = ContainsRed.content;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Contains.content.Add(new Exercise());
+            ContainsRed.content.Add(new Exercise());
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -87,7 +87,7 @@ namespace Tests_application.Pages
             };
             Helper.connect.Tests.Add(tests);
             Helper.connect.SaveChanges();
-            foreach (var item in Contains.content)
+            foreach (var item in ContainsRed.content)
             {
                 int maxId = 0;
                 foreach (var partId in Helper.connect.Questions.ToList())
@@ -154,7 +154,7 @@ namespace Tests_application.Pages
                 Helper.connect.Answers.Add(answers4);
                 Helper.connect.SaveChanges();
             }
-            Helper.frame.Navigate(new MainMenu_Teacher());
+            Helper.frame.Navigate(new MainMenu_Teacher(2));
         }
 
         private childItem FindVisualChild<childItem>(DependencyObject obj)
@@ -179,6 +179,10 @@ namespace Tests_application.Pages
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
+            if (TestsListBox.SelectedItem == null)
+            {
+                TestsListBox.Items.MoveCurrentToFirst();
+            }
             ListBoxItem myListBoxItem =
                (ListBoxItem)(TestsListBox.ItemContainerGenerator.ContainerFromItem(TestsListBox.Items.CurrentItem));
             ContentPresenter myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
@@ -188,12 +192,12 @@ namespace Tests_application.Pages
             RadioButton myRadio3 = (RadioButton)myDataTemplate.FindName("b3", myContentPresenter);
             RadioButton myRadio4 = (RadioButton)myDataTemplate.FindName("b4", myContentPresenter);
 
-            myRadio1.GroupName = $"v{Contains.Counter}";
-            myRadio2.GroupName = $"v{Contains.Counter}";
-            myRadio3.GroupName = $"v{Contains.Counter}";
-            myRadio4.GroupName = $"v{Contains.Counter}";
+            myRadio1.GroupName = $"v{ContainsRed.Counter}";
+            myRadio2.GroupName = $"v{ContainsRed.Counter}";
+            myRadio3.GroupName = $"v{ContainsRed.Counter}";
+            myRadio4.GroupName = $"v{ContainsRed.Counter}";
 
-            Contains.Counter += 1;
+            ContainsRed.Counter += 1;
             
             Exercise a = (Exercise)TestsListBox.SelectedItem;
  
@@ -219,7 +223,7 @@ namespace Tests_application.Pages
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Helper.frame.Navigate(new MainMenu_Teacher());
+            Helper.frame.Navigate(new MainMenu_Teacher(2));
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Tests_application.Pages
             }
             else if (TypeUser[0].ID_Type == 2)
             {
-                Helper.frame.Navigate(new MainMenu_Teacher());
+                Helper.frame.Navigate(new MainMenu_Teacher(TypeUser[0].ID_Group));
             }
             else if (TypeUser[0].ID_Type == 3)
             {
@@ -101,7 +101,7 @@ namespace Tests_application.Pages
             
             login.Foreground = Brushes.Gray;
             //login.Text = "Введите логин";
-            login.Text = "admin";
+            login.Text = "teacher1";
 
         }
 
@@ -109,7 +109,7 @@ namespace Tests_application.Pages
         {
             password.Foreground = Brushes.Gray;
             //password.Text = "Введите пароль";
-            password.Text = "111";
+            password.Text = "222";
         }
     }
 }

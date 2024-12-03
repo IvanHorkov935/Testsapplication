@@ -12,7 +12,7 @@
         <Button Width="200" Height="50" VerticalAlignment="Top" Margin="10,10,590,0" Content="Выйти из аккаунта" FontSize="18" Click="Button_Click"/>
         <TextBlock Text="Вы в главном меню админа" TextAlignment="Center" Margin="215,9,262,391" FontSize="24" Height="50"/>
         <Button Height="50" Margin="10,383,618,17" Content="Создать группу" FontSize="20" Click="Button_Click_1"/>
-        <Button Height="50" Margin="625,383,10,17" Content="Изменить участников" FontSize="16" IsEnabled="False" x:Name="AddMembers" Click="AddMembers_Click"/>
+        <Button Height="50" Margin="614,385,21,15" Content="Изменить участников" FontSize="16" IsEnabled="False" x:Name="AddMembers" Click="AddMembers_Click"/>
         <Button Height="50" Margin="198,383,386,17" Content="Зарегестрировать пользователя" FontSize="14" Click="Button_Click_2"/>
 
         <ListBox Margin="0,81,262,72" x:Name="GroupListBox" SelectionChanged="GroupListBox_SelectionChanged">

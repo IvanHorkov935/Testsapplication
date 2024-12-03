@@ -15,7 +15,7 @@
 
     <Grid Background="White">
         <Button Width="200" Height="50" VerticalAlignment="Top" Margin="10,10,590,0" Content="Выйти из аккаунта" FontSize="18" Click="Button_Click"/>
-        <TextBlock Text="Вы в главном меню учителя" TextAlignment="Center" Margin="226,14,226,390" FontSize="24"/>
+        <TextBlock Text="{Binding Teacher.Full_Name}" TextAlignment="Center" Margin="310,14,306,390" FontSize="24" x:Name="Acc"/>
         <Button Width="200" Height="50" Margin="590,10,10,390" Content="Создать тест" FontSize="24" Click="Button_Click_1"/>
 
         <ListBox ItemsSource="{Binding UsersCollection}"

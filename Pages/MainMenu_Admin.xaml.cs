@@ -49,7 +49,15 @@ namespace Tests_application.Pages
             Contain.users.Clear();
             Groups group = GroupListBox.SelectedItem as Groups;
             if (group == null) { return; }
-            AddMembers.IsEnabled = true;
+
+            if(group.ID == 7)
+            {
+                AddMembers.IsEnabled = false;
+            }
+            else
+            {
+                AddMembers.IsEnabled = true;
+            }
             Contain.CurrentGroup = group;
             if (group.ID == 1 || group.ID == 7)
             {

@@ -16,61 +16,45 @@ namespace Tests_application
     public class ApplicationViewModel : INotifyPropertyChanged
     {
         private User selectedUser;
+        public Users Teacher { get; set; }
+        public int CurrentGroup { get; set; }
         public ObservableCollection<User> UsersCollection { get; set; }
-        public ObservableCollection<Result> UserResultsCollection { get; set; }
+        public ObservableCollection<Results> UserResultsCollection { get; set; } // Result !!!
+        public ObservableCollection<Tests> UserTestsCollection { get; set; }
         public User SelectedUser
         {
             get { return selectedUser; }
             set
             {
                 selectedUser = value;
-                if(UserResultsCollection != null) { UserResultsCollection.Clear(); }
-                List<Results> col2 = (List<Results>)Helper.connect.Results.Where(x => x.ID_User == value.ID).ToList().AsEnumerable();
-                List<int> con = new List<int>();
-                foreach (var result in col2)
+                if (UserResultsCollection != null) { UserResultsCollection.Clear(); }
+
+                foreach(var test in UserTestsCollection)
                 {
-                    if (con.Contains((int)result.ID_Test))
+                    if (Helper.connect.Results.Where(x => x.ID_User == selectedUser.ID && x.ID_Test == test.ID).FirstOrDefault() == null)
                     {
-                        Result a = UserResultsCollection.Where(x => x.ID_User == result.ID_User && x.ID_Test == result.ID_Test).First();
-                        if(result.Per_Complete > a.Per_Complete)
-                        {
-                            UserResultsCollection[UserResultsCollection.IndexOf(a)] = new Result
-                            {
-                                ID = result.ID,
-                                ID_User = result.ID_User,
-                                ID_Test = (int)result.ID_Test,
-                                Per_Complete = (double)result.Per_Complete,
-                            };
-                        }
-                        continue;
+                        UserResultsCollection.Add(new Results() { ID_Test = test.ID, ID_User = selectedUser.ID, Per_Complete = 0 });
                     }
-                    con.Add((int)result.ID_Test);
-                    UserResultsCollection.Add(new Result
+                    else
                     {
-                        ID = result.ID,
-                        ID_User = result.ID_User,
-                        ID_Test = (int)result.ID_Test,
-                        Per_Complete = (double)result.Per_Complete,
-                    });
+                        double a = (double)Helper.connect.Results.Where(x => x.ID_User == selectedUser.ID && x.ID_Test == test.ID).Max(x => x.Per_Complete);
+                        UserResultsCollection.Add(Helper.connect.Results.Where(x => x.ID_User == selectedUser.ID && x.Per_Complete == a && x.ID_Test == test.ID).FirstOrDefault());
+                    }   
                 }
+
                 OnPropertyChanged("SelectedUser");
             }
         }
-        //private Result selectedResult;
-        //private ObservableCollection<Result> resultsCollection;
-        //public ObservableCollection<Result> ResultsCollection
-        //{
-        //    get { return resultsCollection; }
-        //    set
-        //    {
-        //        resultsCollection = value;
-        //        OnPropertyChanged("ResultsCollection");
-        //    }
-        //}
-        public ApplicationViewModel()
+
+        public ApplicationViewModel(int IDGroup)
         {
+            Teacher = Helper.connect.Users.Where(x => x.ID_Group == IDGroup && x.ID_Type == 2).FirstOrDefault();
+            CurrentGroup = IDGroup;
+
+            UserTestsCollection = new ObservableCollection<Tests>();
+            UserResultsCollection = new ObservableCollection<Results>();
             UsersCollection = new ObservableCollection<User>();
-            List<Users> col = (List<Users>)Helper.connect.Users.Where(x => x.ID_Type == 3).ToList().AsEnumerable();
+            List<Users> col = (List<Users>)Helper.connect.Users.Where(x => x.ID_Type == 3 && x.ID_Group == IDGroup).ToList().AsEnumerable();
             foreach (var user in col)
             {
                 UsersCollection.Add(new User
@@ -84,18 +68,17 @@ namespace Tests_application
                 });
             }
 
-            UserResultsCollection = new ObservableCollection<Result>();
-            //List<Results> col2 = (List<Results>)Helper.connect.Results.ToList().AsEnumerable();
-            //foreach (var result in col2)
-            //{
-            //    ResultsCollection.Add(new Result
-            //    {
-            //        ID = result.ID,
-            //        ID_User = result.ID_User,
-            //        ID_Test = (int)result.ID_Test,
-            //        Per_Complete = (double)result.Per_Complete,
-            //    });
-            //}
+            List<int> TestsList = new List<int>();
+            foreach (var item in Helper.connect.Groups_Tests.Where(x => x.ID_Group == CurrentGroup))
+            {
+                TestsList.Add(item.ID_Tests);
+            }
+            
+            foreach (int i in TestsList)
+            {
+                UserTestsCollection.Add(Helper.connect.Tests.Where(x => x.ID == i).First());
+            }
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

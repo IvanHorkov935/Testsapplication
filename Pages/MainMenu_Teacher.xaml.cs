@@ -21,10 +21,12 @@ namespace Tests_application.Pages
     /// </summary>
     public partial class MainMenu_Teacher : Page
     {
+        public int idGroup {  get; set; }
         public MainMenu_Teacher(int IDGroup)
         {
             InitializeComponent();
 
+            idGroup = IDGroup;
             DataContext = new ApplicationViewModel(IDGroup);
         }
 
@@ -35,7 +37,7 @@ namespace Tests_application.Pages
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Helper.frame.Navigate(new TestRedactor());
+            Helper.frame.Navigate(new TestRedactor(idGroup));
         }
     }
 }

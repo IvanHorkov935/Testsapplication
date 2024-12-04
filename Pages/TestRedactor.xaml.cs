@@ -38,104 +38,68 @@ namespace Tests_application.Pages
 
     public partial class TestRedactor : Page
     {
-        public TestRedactor()
+        public int idGroup { get; set; }
+        public TestRedactor(int IDGroup)
         {
             InitializeComponent();
 
+            idGroup = IDGroup;
             TestsListBox.ItemsSource = ContainsRed.content;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ContainsRed.content.Add(new Exercise());
+            if (ContainsRed.content.Count() == 1) { TestsListBox.Items.MoveCurrentToPosition(0); }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            int maxIdtest = 0;
-            foreach (var partId in Helper.connect.Tests.ToList())
-            {
-                if (partId.ID > maxIdtest)
-                {
-                    maxIdtest = partId.ID;
-                }
-            }
-            int maxIdresult = 0;
-            foreach (var partId in Helper.connect.Tests.ToList())
-            {
-                if (partId.ID > maxIdresult)
-                {
-                    maxIdresult = partId.ID;
-                }
-            }
-            List<Users> StudUsers = (List<Users>)Helper.connect.Users.Where(x => x.ID_Type == 3).ToList().AsEnumerable();
-            for (int i = 0; i < Helper.connect.Users.Where(x => x.ID_Type == 3).Count(); i++)
-            {
-                Results result = new Results()
-                {
-                    ID = maxIdresult + 1 + i,
-                    ID_Test = maxIdtest + 1,
-                    ID_User = StudUsers[i].ID,
-                    Per_Complete = 0,
-                };
-                Helper.connect.Results.Add(result);
-            }
             Tests tests = new Tests()
             {
-                ID = maxIdtest + 1,
                 Name = TestName.Text,
             };
             Helper.connect.Tests.Add(tests);
             Helper.connect.SaveChanges();
+            Groups_Tests groups = new Groups_Tests()
+            {
+                ID_Group = idGroup,
+                ID_Tests = Helper.connect.Tests.Max(x => x.ID),
+            };
+            Helper.connect.Groups_Tests.Add(groups);
+            Helper.connect.SaveChanges();
             foreach (var item in ContainsRed.content)
             {
-                int maxId = 0;
-                foreach (var partId in Helper.connect.Questions.ToList())
-                {
-                    if (partId.ID > maxId)
-                    {
-                        maxId = partId.ID;
-                    }
-                }
-                int maxIdans = 0;
-                foreach (var partId in Helper.connect.Answers.ToList())
-                {
-                    if (partId.ID > maxIdans)
-                    {
-                        maxIdans = partId.ID;
-                    }
-                }
+                int MaxID_Test = Helper.connect.Tests.Max(x => x.ID);
                 Questions que = new Questions()
                 {
-                    ID = maxId + 1,
-                    ID_Test = maxIdtest + 1,
+                    ID_Test = MaxID_Test,
                     Contents = item.Ques,
                 };
+                Helper.connect.Questions.Add(que);
+                Helper.connect.SaveChanges();
+                int MaxID_Ques = Helper.connect.Questions.Max(x => x.ID);
                 Answers answers1 = new Answers()
                 {
-                    ID = maxIdans + 1,
-                    ID_Question = maxId + 1,
+                    ID_Question = MaxID_Ques,
                     Correctness = "нет",
                     Contents = item.Ans1
                 };
                 Answers answers2 = new Answers()
                 {
-                    ID = maxIdans + 2,
-                    ID_Question = maxId + 1,
+                    ID_Question = MaxID_Ques,
                     Correctness = "нет",
                     Contents = item.Ans2
                 };
                 Answers answers3 = new Answers()
                 {
-                    ID = maxIdans + 3,
-                    ID_Question = maxId + 1,
+                    ID_Question = MaxID_Ques,
                     Correctness = "нет",
                     Contents = item.Ans3
                 };
                 Answers answers4 = new Answers()
                 {
-                    ID = maxIdans + 4,
-                    ID_Question = maxId + 1,
+                    ID_Question = MaxID_Ques,
                     Correctness = "нет",
                     Contents = item.Ans4
                 };
@@ -146,15 +110,13 @@ namespace Tests_application.Pages
                     case 3: answers3.Correctness = "да"; break;
                     case 4: answers4.Correctness = "да"; break;
                 }
-                
-                Helper.connect.Questions.Add(que);
                 Helper.connect.Answers.Add(answers1);
                 Helper.connect.Answers.Add(answers2);
                 Helper.connect.Answers.Add(answers3);
                 Helper.connect.Answers.Add(answers4);
                 Helper.connect.SaveChanges();
             }
-            Helper.frame.Navigate(new MainMenu_Teacher(2));
+            Helper.frame.Navigate(new MainMenu_Teacher(idGroup));
         }
 
         private childItem FindVisualChild<childItem>(DependencyObject obj)
@@ -179,10 +141,8 @@ namespace Tests_application.Pages
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            if (TestsListBox.SelectedItem == null)
-            {
-                TestsListBox.Items.MoveCurrentToFirst();
-            }
+            RadioButton pressed = (RadioButton)sender;
+ 
             ListBoxItem myListBoxItem =
                (ListBoxItem)(TestsListBox.ItemContainerGenerator.ContainerFromItem(TestsListBox.Items.CurrentItem));
             ContentPresenter myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
@@ -197,33 +157,25 @@ namespace Tests_application.Pages
             myRadio3.GroupName = $"v{ContainsRed.Counter}";
             myRadio4.GroupName = $"v{ContainsRed.Counter}";
 
+            StackPanel stack = (StackPanel)pressed.Parent;
+            Object obj = stack.DataContext;
+            int index = TestsListBox.Items.IndexOf(obj);
+            TestsListBox.Items.MoveCurrentToPosition(index);
+
             ContainsRed.Counter += 1;
             
             Exercise a = (Exercise)TestsListBox.SelectedItem;
- 
-            RadioButton pressed = (RadioButton)sender;
-       
-            if (pressed.Content.ToString() == "1-й ответ")
-            {
-                a.CorrNum = 1;
-            }
-            else if (pressed.Content.ToString() == "2-й ответ")
-            {
-                a.CorrNum = 2;
-            }
-            else if (pressed.Content.ToString() == "3-й ответ")
-            {
-                a.CorrNum = 3;
-            }
-            else if (pressed.Content.ToString() == "4-й ответ")
-            {
-                a.CorrNum = 4;
-            }
+            int ind = ContainsRed.content.IndexOf(a);
+
+            if ((bool)myRadio1.IsChecked) { ContainsRed.content[ind].CorrNum = 1; }
+            if ((bool)myRadio2.IsChecked) { ContainsRed.content[ind].CorrNum = 2; }
+            if ((bool)myRadio3.IsChecked) { ContainsRed.content[ind].CorrNum = 3; }
+            if ((bool)myRadio4.IsChecked) { ContainsRed.content[ind].CorrNum = 4; }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Helper.frame.Navigate(new MainMenu_Teacher(2));
+            Helper.frame.Navigate(new MainMenu_Teacher(idGroup));
         }
     }
 }

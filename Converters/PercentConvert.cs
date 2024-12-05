@@ -25,7 +25,6 @@ namespace Tests_application.Converters
                     double com = 0;
                     foreach (Results a in res)
                     {
-                        //MessageBox.Show()
                         com = (double)a.Per_Complete;
                     }
                     return com.ToString("P0", CultureInfo.InvariantCulture);

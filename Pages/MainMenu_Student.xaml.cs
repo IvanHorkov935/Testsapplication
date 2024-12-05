@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -22,71 +23,60 @@ namespace Tests_application.Pages
     /// </summary>
     class Params
     {
-        public static Tests NumTest = null;
-        public static int counter = 1;
-        public static int NumCorrAns = 0;
-        public static CheckBox pressed = null;
-        public static int NumQues = 0; //Helper.connect.Questions.Where(x => x.ID_Test == 1).Count();
-        public static List<Questions> Questions = null;
-        public static List<Answers> Answers = null;
-        public static int StudentID = 0;
+        public static Users user;
+        public static int groupID;
+        public static CheckBox pressed;
+        public static int counter = 0;
+        public static double NumCorrAns = 0;
+    }
+    public class ForListBox
+    {
+        public string NameTest { get; set; }
+        public double PerComplete { get; set; }
     }
     public partial class MainMenu_Student : Page
     {
-        public MainMenu_Student(int id)
+        public MainMenu_Student(Users CurrUser)
         {
             InitializeComponent();
+            Groups StudentGroup = Helper.connect.Groups.FirstOrDefault(g => g.ID == CurrUser.ID_Group);
 
-            Params.StudentID = id;
+            Params.user = CurrUser;
+            Params.groupID = StudentGroup.ID;
 
-            List<Users> user = (List<Users>)Helper.connect.Users.Where(x => x.ID == id).ToList().AsEnumerable();
-            UserName.Text = user[0].Full_Name;
-            int id_group = user[0].ID_Group;
-            List<Groups> group = (List<Groups>)Helper.connect.Groups.Where(x => x.ID == id_group).ToList().AsEnumerable();
-            UserGroup.Text = $"Группа: {group[0].Name}";
+            UserName.Text = $"Имя: {CurrUser.Full_Name}";
+            UserGroup.Text = $"Группа: {StudentGroup.Name}";
 
-
-            List<Results> res = new List<Results>();
-            List<int> con = new List<int>();
-            List<Results> results = (List<Results>)Helper.connect.Results.Where(x => x.ID_User == id).ToList().AsEnumerable();
-            foreach (Results r in results)
+            List<int> GroupTests = new List<int>();
+            ObservableCollection<Tests> StudentTests = new ObservableCollection<Tests>();
+            foreach(var i in Helper.connect.Groups_Tests.Where(x => x.ID_Group == StudentGroup.ID))
             {
-                if (con.Contains((int)r.ID_Test))
-                {
-                    continue;
-                }
-                if(Helper.connect.Results.Where(x => x.ID_User == id && x.ID_Test == r.ID_Test).Count() > 1)
-                {
-                    con.Add((int)r.ID_Test);
-                    Results maxres = new Results { Per_Complete = 0};
-                    foreach(Results t in Helper.connect.Results.Where(x => x.ID_User == id && x.ID_Test == r.ID_Test).ToList())
-                    {
-                        if (t.Per_Complete > maxres.Per_Complete)
-                        {
-                            maxres = t;
-                        }
-                    }
-                    res.Add(maxres);
-                }
-                else
-                {
-                    res.Add(r);
-                }
+                GroupTests.Add(i.ID_Tests);
+            }
+            foreach(int i in GroupTests)
+            {
+                StudentTests.Add(Helper.connect.Tests.Where(x => x.ID == i).FirstOrDefault());
             }
 
-            //TestsListBox.ItemsSource = Helper.connect.Results.Where(x => x.ID_User == id).ToList();
-            TestsListBox.ItemsSource = res.ToList();
+            ObservableCollection<ForListBox> TestsResults = new ObservableCollection<ForListBox>();
+            foreach(var i in StudentTests)
+            {
+                if(Helper.connect.Results.Where(x => x.ID_User == CurrUser.ID && x.ID_Test == i.ID).Count() == 0) { TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = 0 }); continue; }
+                var b = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == CurrUser.ID);
+                double j = 0;
+                if (b != null) { j = (double)b.Max(x => x.Per_Complete); }
+                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete =  j});
+            }
+
+            TestsListBox.ItemsSource = TestsResults;
             TestsListBox.SelectionChanged += LBox_SelectionChanged;
         }
 
         private void LBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Params.NumTest = (Tests)TestsListBox.SelectedItem;
-            Results a = TestsListBox.SelectedItem as Results;
-            Params.NumTest = Helper.connect.Tests.Find(a.ID_Test);
-
-            Params.NumQues = Helper.connect.Questions.Where(x => x.ID_Test == Params.NumTest.ID).Count();
-            Helper.frame.Navigate(new PassTest(Params.counter, Params.NumTest.ID));
+            var a = TestsListBox.SelectedItem as ForListBox;
+            int idTest = Helper.connect.Tests.First(x => x.Name == a.NameTest).ID;
+            Helper.frame.Navigate(new PassTest(idTest));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

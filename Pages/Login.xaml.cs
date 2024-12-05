@@ -42,7 +42,7 @@ namespace Tests_application.Pages
             else if (TypeUser[0].ID_Type == 3)
             {
                 //var Student = Helper.connect.Users.Where(x => x.Login == l).ToList().AsEnumerable();
-                Helper.frame.Navigate(new MainMenu_Student(TypeUser[0].ID));
+                Helper.frame.Navigate(new MainMenu_Student(TypeUser[0]));
             }
             else if (TypeUser[0].ID_Type == 1)
             {
@@ -101,7 +101,7 @@ namespace Tests_application.Pages
             
             login.Foreground = Brushes.Gray;
             //login.Text = "Введите логин";
-            login.Text = "teacher1";
+            login.Text = "student1";
 
         }
 
@@ -109,7 +109,7 @@ namespace Tests_application.Pages
         {
             password.Foreground = Brushes.Gray;
             //password.Text = "Введите пароль";
-            password.Text = "222";
+            password.Text = "333";
         }
     }
 }

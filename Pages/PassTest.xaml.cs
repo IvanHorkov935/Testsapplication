@@ -19,90 +19,56 @@ namespace Tests_application.Pages
 {
     // Использовать RadioButton вместо ChekBox
     // Продумать логику программы
+    public class Gay
+    {
+
+    }
     public partial class PassTest : Page
     {
-        public PassTest(int con, int NumTest)
+        public string CorrAns { get; set; }
+        public double CountQues { get; set; }
+        public int IDTest { get; set; }
+        public PassTest(int idTest)
         {
             InitializeComponent();
 
-            if(Params.NumQues == Params.counter)
-            {
-                b1.Visibility = Visibility.Collapsed;
-                b2.Visibility = Visibility.Visible;
-            }
-            a.DataContext = Helper.connect.Tests.Where(x => x.ID == NumTest).ToList();
+            List<Questions> questions = (List<Questions>)Helper.connect.Questions.Where(x => x.ID_Test == idTest).ToList().AsEnumerable();
+            Questions CurrQues = questions[Params.counter];
+            if( CurrQues == questions.Last()) { b1.Visibility = Visibility.Collapsed; b2.Visibility = Visibility.Visible; }
+            List<Answers> answers = (List<Answers>)Helper.connect.Answers.Where(x => x.ID_Question == CurrQues.ID).ToList().AsEnumerable();
 
-            Params.Questions = (List<Questions>)Helper.connect.Questions.Where(x => x.ID_Test == NumTest).ToList().AsEnumerable();
+            CorrAns = answers.Where(x => x.Correctness == "да   ").First().Contents;
+            IDTest = idTest;
+            CountQues = questions.Count();
 
-            int CurrentQues = Params.Questions[con-1].ID;
-
-            Params.Answers = (List<Answers>)Helper.connect.Answers.Where(x => x.ID_Question == CurrentQues).ToList().AsEnumerable();
-
-            //question.DataContext = Params.Questions.Where(x => x.ID_Test == NumTest).ToList();
-            question.DataContext = Params.Questions[con - 1];
-            ans1.DataContext = Params.Answers[0];
-            ans2.DataContext = Params.Answers[1];
-            ans3.DataContext = Params.Answers[2];
-            ans4.DataContext = Params.Answers[3];
+            question.DataContext = CurrQues;
+            ans1.DataContext = answers[0];
+            ans2.DataContext = answers[1];
+            ans3.DataContext = answers[2];
+            ans4.DataContext = answers[3];
 
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string ans = Params.pressed.Content.ToString();
-            List<Answers> CorrectBns = (List<Answers>)Helper.connect.Answers.Where(x => x.Contents == ans && x.Correctness == "да").ToList();
-            if (CorrectBns.Count > 0)
+            if ((string)Params.pressed.Content == CorrAns)
             {
                 Params.NumCorrAns += 1;
             }
-            else
-            {
-                
-            }
-          
-            Params.counter += 1;
-            Helper.frame.Navigate(new PassTest(Params.counter, Params.NumTest.ID));
+            Params.counter++;
+            Helper.frame.Navigate(new PassTest(IDTest));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            string ans = Params.pressed.Content.ToString();
-            List<Answers> CorrectBns = (List<Answers>)Helper.connect.Answers.Where(x => x.Contents == ans && x.Correctness == "да").ToList();
-            if (CorrectBns.Count > 0)
+            if ((string)Params.pressed.Content == CorrAns)
             {
                 Params.NumCorrAns += 1;
             }
-            else
-            {
-                
-            }
-
-            Results result = new Results()
-            {
-                ID_Test = Params.NumTest.ID,
-                ID_User = Params.StudentID,
-                Per_Complete = (float)Params.NumCorrAns / Params.NumQues
-            };
-
-            int maxId = 0;
-            foreach (var partId in Helper.connect.Results.ToList())
-            {
-                if (partId.ID > maxId)
-                {
-                    maxId = partId.ID;
-                }
-            }
-            result.ID = maxId + 1;
-            Helper.connect.Results.Add(result);
+            Helper.connect.Results.Add(new Results { ID_Test = IDTest, ID_User = Params.user.ID, Per_Complete = Params.NumCorrAns / CountQues});
             Helper.connect.SaveChanges();
-            Params.counter = 1;
+            Params.counter = 0;
             Params.NumCorrAns = 0;
-            Params.pressed = null;
-            Params.NumQues = 0;
-            Params.NumTest = null;
-            Params.Questions = null;
-            Params.Answers = null;
-            Helper.frame.Navigate(new MainMenu_Student(Params.StudentID));
+            Helper.frame.Navigate(new MainMenu_Student(Params.user));
         }
 
         private void chek1_Checked(object sender, RoutedEventArgs e)

@@ -33,6 +33,7 @@ namespace Tests_application.Pages
     {
         public string NameTest { get; set; }
         public double PerComplete { get; set; }
+        public int PerCompForProgress { get; set; }
     }
     public partial class MainMenu_Student : Page
     {
@@ -65,7 +66,7 @@ namespace Tests_application.Pages
                 var b = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == CurrUser.ID);
                 double j = 0;
                 if (b != null) { j = (double)b.Max(x => x.Per_Complete); }
-                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete =  j});
+                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = j, PerCompForProgress = 50 });
             }
 
             TestsListBox.ItemsSource = TestsResults;

@@ -1,0 +1,15 @@
+﻿<Page x:Class="Tests_application.Pages.TestFinal"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Tests_application.Pages" xmlns:local1="clr-namespace:Tests_application"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TestFinal">
+
+    <Grid Background="White">
+        <local1:MyProgress x:Name="Progress1" Value="0" Margin="272,225,324,121"/>
+        <TextBlock Margin="314,277,366,121" Text="" TextAlignment="Center" FontSize="36" x:Name="Perc"/>
+    </Grid>
+</Page>

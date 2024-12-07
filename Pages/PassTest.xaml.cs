@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -13,31 +14,121 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
-    // Использовать RadioButton вместо ChekBox
-    // Продумать логику программы
-    public class Gay
+   
+    
+    public partial class PassTest : Page, INotifyPropertyChanged
     {
+        private DateTime _startCountdown; 
+        private TimeSpan _startTimeSpan = TimeSpan.FromMinutes(5); 
+        private TimeSpan _timeToEnd; 
+        private TimeSpan _interval = TimeSpan.FromMilliseconds(15); 
+        private DateTime _pauseTime;
+        private DispatcherTimer _timer;
 
-    }
-    public partial class PassTest : Page
-    {
+        public TimeSpan TimeToEnd
+        {
+            get
+            {
+                return _timeToEnd;
+            }
+
+            set
+            {
+                _timeToEnd = value;
+                if (value.TotalMilliseconds <= 0)
+                {
+                    StopTimer();
+                    //действия при окончании таймера
+                }
+
+                OnPropertyChanged("StringCountdown");
+            }
+        }
+
+        public string StringCountdown
+        {
+            get
+            {
+                var frmt = TimeToEnd.Minutes < 1 ? "ss\\.ff" : "mm\\:ss";
+                return $"Оставшееся время: {_timeToEnd.ToString(frmt)}";
+            }
+        }
+
+        public bool TimerIsEnabled
+        {
+            get { return _timer.IsEnabled; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void StopTimer()
+        {
+            if (TimerIsEnabled)
+                _timer.Stop();
+            TimeToEnd = _startTimeSpan;
+        }
+
+        private void StartTimer(DateTime sDate)
+        {
+            _startCountdown = sDate;
+            _timer.Start();
+        }
+
+        private void PauseTimer()
+        {
+            _timer.Stop();
+            _pauseTime = DateTime.Now;
+        }
+
+        private void ReleaseTimer()
+        {
+            var now = DateTime.Now;
+            var elapsed = now.Subtract(_pauseTime);
+            _startCountdown = _startCountdown.Add(elapsed);
+            _timer.Start();
+        }
+
+
         public string CorrAns { get; set; }
         public double CountQues { get; set; }
         public int IDTest { get; set; }
+        public string TestName {  get; set; }
         public PassTest(int idTest)
         {
+            _timer = new DispatcherTimer();
+            _timer.Interval = _interval;
+            _timer.Tick += delegate
+            {
+                var now = DateTime.Now;
+                var elapsed = now.Subtract(_startCountdown);
+                TimeToEnd = _startTimeSpan.Subtract(elapsed);
+            };
+            StartTimer(DateTime.Now);
+
+
             InitializeComponent();
+
+            Time.DataContext = this;
+            TestName = Helper.connect.Tests.FirstOrDefault(x => x.ID == idTest).Name;
+            Title.DataContext = this;
 
             List<Questions> questions = (List<Questions>)Helper.connect.Questions.Where(x => x.ID_Test == idTest).ToList().AsEnumerable();
             Questions CurrQues = questions[Params.counter];
             if( CurrQues == questions.Last()) { b1.Visibility = Visibility.Collapsed; b2.Visibility = Visibility.Visible; }
             List<Answers> answers = (List<Answers>)Helper.connect.Answers.Where(x => x.ID_Question == CurrQues.ID).ToList().AsEnumerable();
 
-            CorrAns = answers.Where(x => x.Correctness == "да   ").First().Contents;
+            CorrAns = answers.Where(x => x.Correctness == "да" || x.Correctness == "да   ").First().Contents;
             IDTest = idTest;
             CountQues = questions.Count();
 

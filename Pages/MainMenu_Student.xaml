@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Tests_application.Pages" xmlns:local1="clr-namespace:Tests_application.Converters" xmlns:local2="clr-namespace:Tests_application"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainMenu_Student">
+      Title="MainMenu_Student" Loaded="Window_OnLoaded">
 
     <Page.Resources>
         <local1:PercentConvert x:Key="PercentConvert"/>

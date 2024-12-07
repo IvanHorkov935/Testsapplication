@@ -16,7 +16,7 @@
             <!--<local:MyProgress x:Name="Progress1" Value="0" Margin="19,16,18,9" />-->
             <local1:SemicircleProgressBar x:Name="SemiCpb1"
                                  Value="75" Minimum="0" Maximum="100"
-                                 CuttingFactor="0.8"
+                                 CuttingFactor="0.8" 
                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                  Height="100" Width="200"/>
         </Border>

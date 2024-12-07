@@ -9,7 +9,8 @@
       Title="PassTest">
 
     <Grid Background="White" x:Name="a">
-        <TextBlock Margin="10,10,400,394" FontSize="18" x:Name="Title" Text="{Binding Path=Name}"/>
+        <TextBlock Margin="10,10,448,394" FontSize="18" x:Name="Title" Text="{Binding TestName}"/>
+        <TextBlock Margin="510,10,10,394" Height="46" FontSize="18" x:Name="Time" Text="{Binding StringCountdown}"/>
         <StackPanel Margin="0,61,0,329" x:Name="question">
             <TextBlock FontSize="18" Text="{Binding Path=Contents}" Height="60" TextAlignment="Center"/>
         </StackPanel>

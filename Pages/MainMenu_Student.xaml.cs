@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -66,11 +68,27 @@ namespace Tests_application.Pages
                 var b = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == CurrUser.ID);
                 double j = 0;
                 if (b != null) { j = (double)b.Max(x => x.Per_Complete); }
-                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = j, PerCompForProgress = 50 });
+                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = j, PerCompForProgress = (int)(j * 100) });
             }
 
             TestsListBox.ItemsSource = TestsResults;
             TestsListBox.SelectionChanged += LBox_SelectionChanged;
+        }
+
+        private void Window_OnLoaded(object sender, RoutedEventArgs e)
+        {
+
+            //var maximum = bar.Maximum;
+            //Action action = () => { bar.Value++; };
+            //var task = new Task(() =>
+            //{
+            //    for (var i = 0; i < maximum; i++)
+            //    {
+            //        bar.Dispatcher.Invoke(action);
+            //        Thread.Sleep(100);
+            //    }
+            //});
+            //task.Start();
         }
 
         private void LBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

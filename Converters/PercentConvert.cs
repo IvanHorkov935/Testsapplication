@@ -15,6 +15,7 @@ namespace Tests_application.Converters
         {
             if (value != null)
             {
+                
                 if (value is double per)
                 {
                     return per.ToString("P0", CultureInfo.InvariantCulture);

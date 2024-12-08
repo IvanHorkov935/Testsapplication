@@ -24,7 +24,7 @@ namespace Tests_application.Pages
     public partial class PassTest : Page, INotifyPropertyChanged
     {
         private DateTime _startCountdown; 
-        private TimeSpan _startTimeSpan = TimeSpan.FromMinutes(5); 
+        private TimeSpan _startTimeSpan {  get; set; } 
         private TimeSpan _timeToEnd; 
         private TimeSpan _interval = TimeSpan.FromMilliseconds(15); 
         private DateTime _pauseTime;
@@ -104,8 +104,9 @@ namespace Tests_application.Pages
         public double CountQues { get; set; }
         public int IDTest { get; set; }
         public string TestName {  get; set; }
-        public PassTest(int idTest)
+        public PassTest(int idTest, TimeSpan Tend)
         {
+            _startTimeSpan = Tend;
             _timer = new DispatcherTimer();
             _timer.Interval = _interval;
             _timer.Tick += delegate
@@ -146,7 +147,7 @@ namespace Tests_application.Pages
                 Params.NumCorrAns += 1;
             }
             Params.counter++;
-            Helper.frame.Navigate(new PassTest(IDTest));
+            Helper.frame.Navigate(new PassTest(IDTest, TimeToEnd));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -156,10 +157,11 @@ namespace Tests_application.Pages
                 Params.NumCorrAns += 1;
             }
             Helper.connect.Results.Add(new Results { ID_Test = IDTest, ID_User = Params.user.ID, Per_Complete = Params.NumCorrAns / CountQues});
-            Helper.connect.SaveChanges();
+            //Helper.connect.SaveChanges();
+            double tem = Params.NumCorrAns / CountQues;
             Params.counter = 0;
             Params.NumCorrAns = 0;
-            Helper.frame.Navigate(new MainMenu_Student(Params.user));
+            Helper.frame.Navigate(new TestFinal(tem));
         }
 
         private void chek1_Checked(object sender, RoutedEventArgs e)
@@ -206,5 +208,15 @@ namespace Tests_application.Pages
             }
         }
 
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            CorrAns = null;
+            CountQues = 0;
+            IDTest = 0;
+            TestName = null;
+            Params.counter = 0;
+            Params.NumCorrAns = 0;
+            Helper.frame.Navigate(new MainMenu_Student(Params.user));
+        }
     }
 }

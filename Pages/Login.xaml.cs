@@ -52,7 +52,7 @@ namespace Tests_application.Pages
             {
                 MessageBox.Show("Неправтльный логин или пароль");
             }
-            //Helper.frame.Navigate(new Maket());
+            //Helper.frame.Navigate(new TestFinal(50));
         }
 
         private void login_GotMouseCapture(object sender, MouseEventArgs e)

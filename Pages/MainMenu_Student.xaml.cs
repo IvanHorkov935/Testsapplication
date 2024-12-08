@@ -95,7 +95,7 @@ namespace Tests_application.Pages
         {
             var a = TestsListBox.SelectedItem as ForListBox;
             int idTest = Helper.connect.Tests.First(x => x.Name == a.NameTest).ID;
-            Helper.frame.Navigate(new PassTest(idTest));
+            Helper.frame.Navigate(new PassTest(idTest, TimeSpan.FromMinutes(5)));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

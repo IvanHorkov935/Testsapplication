@@ -3,13 +3,31 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Tests_application.Pages" xmlns:local1="clr-namespace:Tests_application"
+      xmlns:local="clr-namespace:Tests_application.Pages" xmlns:local1="clr-namespace:Tests_application" xmlns:local2="clr-namespace:Tests_application.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="TestFinal">
+      Title="TestFinal" Loaded="Window_OnLoaded">
+
+    <Page.Resources>
+        <local2:PercentConvert x:Key="PercentConvert"/>
+    </Page.Resources>
 
     <Grid Background="White">
-        <local1:MyProgress x:Name="Progress1" Value="0" Margin="272,225,324,121"/>
-        <TextBlock Margin="314,277,366,121" Text="" TextAlignment="Center" FontSize="36" x:Name="Perc"/>
+        <TextBlock Margin="10,10,10,387" TextAlignment="Center" Text="Результаты теста:" FontSize="36"/>
+        <Border Margin="10,68,400,161" Background="#FFE6E6E6">
+            <local:SemicircleProgressBar x:Name="Progress1"
+                Value="0" Minimum="0" Maximum="100"
+                CuttingFactor="0.8"
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                Height="171" Width="276" Background="#FFFFFEFE"/>
+        </Border>
+        <TextBlock Margin="134,190,524,215" TextAlignment="Center" FontSize="36" x:Name="ResBlock" Text="{Binding ResForText, Converter={StaticResource PercentConvert}}"/>
+        <StackPanel Margin="405,68,10,161">
+            <TextBlock Height="42" Text="Ваша оценка:" TextAlignment="Center" FontSize="36"/>
+            <Border Height="55"/>
+            <TextBlock Height="94" Width="159" Text="" TextAlignment="Center" FontSize="72" Background="White" Foreground="#FFF1F1F1" x:Name="Grade"/>
+        </StackPanel>
+
+        <Button Margin="321,392,321,10" Content="В меню" FontSize="24" Click="Button_Click"/>
     </Grid>
 </Page>

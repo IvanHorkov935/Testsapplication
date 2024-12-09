@@ -28,6 +28,7 @@ namespace Tests_application.Pages
     {
         public int Result { get; set; }
         public int ResultForProgress { get; set; }
+        public Users CurrUser;
         private double _resfortext;
         public double ResForText
         {
@@ -41,9 +42,10 @@ namespace Tests_application.Pages
                 OnPropertyChanged("ResForText");
             }
         }
-        public TestFinal(double Res)
+        public TestFinal(double Res, Users CurrUser)
         {
             InitializeComponent();
+            this.CurrUser = CurrUser;
 
             Result = (int)(Res * 100);
             ResultForProgress = (int)(Res * 100);
@@ -58,7 +60,7 @@ namespace Tests_application.Pages
                 for (int i = 0; i < ResultForProgress; i++)
                 {
                     Progress1.Dispatcher.Invoke(action);
-                    Thread.Sleep(20 + (i * 2));
+                    Thread.Sleep(2 + (i));
                 }
             });
             task.Start();
@@ -78,7 +80,7 @@ namespace Tests_application.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Helper.frame.Navigate(new MainMenu_Student(Params.user));
+            Helper.frame.Navigate(new MainMenu_Student(CurrUser, Helper.connect.Groups.FirstOrDefault(x => x.ID == CurrUser.ID_Group)));
         }
     }
 }

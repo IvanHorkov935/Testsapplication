@@ -9,23 +9,23 @@
       Title="PassTest">
 
     <Grid Background="White" x:Name="a">
-        <TextBlock Margin="10,10,448,394" FontSize="18" x:Name="Title" Text="{Binding TestName}"/>
+        <TextBlock Margin="10,10,448,394" FontSize="18" x:Name="Title" Text="{Binding Name}"/>
         <TextBlock Margin="510,10,10,394" Height="46" FontSize="18" x:Name="Time" Text="{Binding StringCountdown}"/>
-        <StackPanel Margin="0,61,0,329" x:Name="question">
+        <StackPanel Margin="0,61,0,329" x:Name="Question">
             <TextBlock FontSize="18" Text="{Binding Path=Contents}" Height="60" TextAlignment="Center"/>
         </StackPanel>
 
         <StackPanel Margin="0,121,400,225" Orientation="Horizontal" x:Name="ans1">
-            <CheckBox Width="280" Height="55" Margin="40,0,10,0" x:Name="chek1" Checked="chek1_Checked" IsChecked="False" Content="{Binding Path=Contents}" FontSize="16" VerticalContentAlignment="Center"/>
+            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek1" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
         </StackPanel>
         <StackPanel Margin="390,121,0,225" Orientation="Horizontal" x:Name="ans2">
-            <CheckBox Width="280" Height="55" Margin="40,0,10,0" x:Name="chek2" Checked="chek2_Checked" IsChecked="False" Content="{Binding Path=Contents}" FontSize="16" VerticalContentAlignment="Center"/>
+            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek2" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
         </StackPanel>
         <StackPanel Margin="0,230,390,130" Orientation="Horizontal" x:Name="ans3" Height="104">
-            <CheckBox Width="280" Height="55" Margin="40,0,10,0" x:Name="chek3" Checked="chek3_Checked" IsChecked="False" Content="{Binding Path=Contents}" FontSize="16" VerticalContentAlignment="Center"/>
+            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek3" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
         </StackPanel>
         <StackPanel Margin="390,230,0,116" Orientation="Horizontal" x:Name="ans4" Height="104">
-            <CheckBox Width="280" Height="55" Margin="40,0,10,0" x:Name="chek4" Checked="chek4_Checked" IsChecked="False" Content="{Binding Path=Contents}" FontSize="16" VerticalContentAlignment="Center"/>
+            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek4" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
         </StackPanel>
 
         <Button x:Name="b1" Height="50" Margin="0,390,0,10" HorizontalAlignment="Center" Width="169" Content="Ответить" FontSize="22" Click="Button_Click"/>

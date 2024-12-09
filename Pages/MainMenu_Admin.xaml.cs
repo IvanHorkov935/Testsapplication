@@ -19,24 +19,21 @@ using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
-
-    public class Contain
-    {
-        public static ObservableCollection<Users> users = new ObservableCollection<Users>();
-        public static ObservableCollection<Groups> groups = new ObservableCollection<Groups>();
-        public static Groups CurrentGroup;
-    }
     public partial class MainMenu_Admin : Page
     {
+        public ObservableCollection<Users> ListUsers = new ObservableCollection<Users>();
+        public ObservableCollection<Groups> ListGroups = new ObservableCollection<Groups>();
+        public Groups CurrentGroup = null;
+
         public MainMenu_Admin()
         {
             InitializeComponent();
             foreach(var item in Helper.connect.Groups)
             {
-                Contain.groups.Add(item);
+                ListGroups.Add(item);
             }
-            InfListBox.ItemsSource = Contain.users;
-            GroupListBox.ItemsSource = Contain.groups;
+            InfListBox.ItemsSource = ListUsers;
+            GroupListBox.ItemsSource = ListGroups;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -46,42 +43,14 @@ namespace Tests_application.Pages
 
         private void GroupListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Contain.users.Clear();
-            Groups group = GroupListBox.SelectedItem as Groups;
-            if (group == null) { return; }
+            if (ListUsers != null) { ListUsers.Clear(); }
+            CurrentGroup = GroupListBox.SelectedItem as Groups;
+            if (CurrentGroup == null) { AddMembers.IsEnabled = true; return; }
+            else { AddMembers.IsEnabled = true; }
 
-            if(group.ID == 7)
-            {
-                AddMembers.IsEnabled = false;
-            }
-            else
-            {
-                AddMembers.IsEnabled = true;
-            }
-            Contain.CurrentGroup = group;
-            if (group.ID == 1 || group.ID == 7)
-            {
-                Users user = new Users()
-                {
-                    Full_Name = "-"
-                };
-                t1.DataContext = user;
-                var list = Helper.connect.Users.Where(x => x.ID_Group == group.ID).ToList().AsEnumerable();
-                foreach (var item in list)
-                {
-                    Contain.users.Add(item);
-                }
-            }
-            else
-            {
-                t1.DataContext = Helper.connect.Users.Where(x => x.ID_Group == group.ID && x.ID_Type == 2).FirstOrDefault();
-                var list = Helper.connect.Users.Where(x => x.ID_Group == group.ID && x.ID_Type != 2).ToList().AsEnumerable();
-                foreach (var item in list)
-                {
-                    Contain.users.Add(item);
-                }
-            }
-            
+            t1.DataContext = Helper.connect.Users.Where(x => x.ID_Group == CurrentGroup.ID && x.ID_Type == 2).FirstOrDefault();
+            foreach (Users user in Helper.connect.Users.Where(x => x.ID_Group == CurrentGroup.ID && x.ID_Type != 2)) { ListUsers.Add(user); }
+            //MessageBox.Show(CurrentGroup.Name);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -93,9 +62,9 @@ namespace Tests_application.Pages
                 {
                     Name = h.NewGroupName
                 };
-                Contain.groups.Add(group);
+                ListGroups.Add(group);
                 Helper.connect.Groups.Add(group);
-                Helper.connect.SaveChanges();
+                //Helper.connect.SaveChanges();
             }
             else
             {
@@ -105,10 +74,8 @@ namespace Tests_application.Pages
 
         private void AddMembers_Click(object sender, RoutedEventArgs e)
         {
-            Groups a = (Groups)GroupListBox.SelectedItem;
-            Contain.groups.Clear();
-            Contain.users.Clear();
-            Helper.frame.Navigate(new AddMemders(a.ID));
+            Groups clickedGroup = (Groups)GroupListBox.SelectedItem;
+            Helper.frame.Navigate(new AddMemders(clickedGroup));
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -116,9 +83,9 @@ namespace Tests_application.Pages
             AddUser h = new AddUser();
             if (h.ShowDialog() == true)
             {
-                //Contain.users.Add(h.newUser);
+                ListUsers.Add(h.newUser);
                 Helper.connect.Users.Add(h.newUser);
-                Helper.connect.SaveChanges();
+                //Helper.connect.SaveChanges();
             }
             else
             {

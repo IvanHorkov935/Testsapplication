@@ -20,17 +20,6 @@ using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для MainMenu_Student.xaml
-    /// </summary>
-    class Params
-    {
-        public static Users user;
-        public static int groupID;
-        public static CheckBox pressed;
-        public static int counter = 0;
-        public static double NumCorrAns = 0;
-    }
     public class ForListBox
     {
         public string NameTest { get; set; }
@@ -39,36 +28,28 @@ namespace Tests_application.Pages
     }
     public partial class MainMenu_Student : Page
     {
-        public MainMenu_Student(Users CurrUser)
+        ObservableCollection<Tests> StudentTests = new ObservableCollection<Tests>();
+        ObservableCollection<ForListBox> TestsResults = new ObservableCollection<ForListBox>();
+        public Users CurrUser;
+        public MainMenu_Student(Users CurrUser, Groups CurrGroup)
         {
             InitializeComponent();
-            Groups StudentGroup = Helper.connect.Groups.FirstOrDefault(g => g.ID == CurrUser.ID_Group);
-
-            Params.user = CurrUser;
-            Params.groupID = StudentGroup.ID;
+            this.CurrUser = CurrUser;
 
             UserName.Text = $"Имя: {CurrUser.Full_Name}";
-            UserGroup.Text = $"Группа: {StudentGroup.Name}";
-
-            List<int> GroupTests = new List<int>();
-            ObservableCollection<Tests> StudentTests = new ObservableCollection<Tests>();
-            foreach(var i in Helper.connect.Groups_Tests.Where(x => x.ID_Group == StudentGroup.ID))
+            UserGroup.Text = $"Группа: {CurrGroup.Name}";
+            
+            foreach(var i in Helper.connect.Groups_Tests.Where(x => x.ID_Group == CurrGroup.ID))
             {
-                GroupTests.Add(i.ID_Tests);
-            }
-            foreach(int i in GroupTests)
-            {
-                StudentTests.Add(Helper.connect.Tests.Where(x => x.ID == i).FirstOrDefault());
+                StudentTests.Add(i.Tests);
             }
 
-            ObservableCollection<ForListBox> TestsResults = new ObservableCollection<ForListBox>();
             foreach(var i in StudentTests)
             {
                 if(Helper.connect.Results.Where(x => x.ID_User == CurrUser.ID && x.ID_Test == i.ID).Count() == 0) { TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = 0 }); continue; }
-                var b = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == CurrUser.ID);
-                double j = 0;
-                if (b != null) { j = (double)b.Max(x => x.Per_Complete); }
-                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = j, PerCompForProgress = (int)(j * 100) });
+                var ResultsThisTest = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == CurrUser.ID);
+                double percomp = (double)ResultsThisTest.Max(x => x.Per_Complete);
+                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = percomp, PerCompForProgress = (int)(percomp * 100) });
             }
 
             TestsListBox.ItemsSource = TestsResults;
@@ -77,25 +58,13 @@ namespace Tests_application.Pages
 
         private void Window_OnLoaded(object sender, RoutedEventArgs e)
         {
-
-            //var maximum = bar.Maximum;
-            //Action action = () => { bar.Value++; };
-            //var task = new Task(() =>
-            //{
-            //    for (var i = 0; i < maximum; i++)
-            //    {
-            //        bar.Dispatcher.Invoke(action);
-            //        Thread.Sleep(100);
-            //    }
-            //});
-            //task.Start();
         }
 
         private void LBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var a = TestsListBox.SelectedItem as ForListBox;
-            int idTest = Helper.connect.Tests.First(x => x.Name == a.NameTest).ID;
-            Helper.frame.Navigate(new PassTest(idTest, TimeSpan.FromMinutes(5)));
+            var test = TestsListBox.SelectedItem as ForListBox;
+            Tests Test = Helper.connect.Tests.First(x => x.Name == test.NameTest);
+            Helper.frame.Navigate(new PassTest(Test, CurrUser,  TimeSpan.FromMinutes(5)));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

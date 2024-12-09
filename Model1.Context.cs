@@ -30,7 +30,6 @@ namespace Tests_application
         public virtual DbSet<Groups_Tests> Groups_Tests { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Results> Results { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Testing> Testing { get; set; }
         public virtual DbSet<Tests> Tests { get; set; }
         public virtual DbSet<Users> Users { get; set; }

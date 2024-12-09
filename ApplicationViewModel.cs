@@ -62,7 +62,7 @@ namespace Tests_application
                     ID = user.ID,
                     Login = user.Login,
                     Password = user.Password,
-                    ID_Group = user.ID_Group,
+                    ID_Group = (int)user.ID_Group,
                     ID_Type = user.ID_Type,
                     Full_Name = user.Full_Name,
                 });

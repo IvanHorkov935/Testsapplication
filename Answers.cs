@@ -16,7 +16,7 @@ namespace Tests_application
     {
         public int ID { get; set; }
         public int ID_Question { get; set; }
-        public string Correctness { get; set; }
+        public Nullable<int> Correctness { get; set; }
         public string Contents { get; set; }
     
         public virtual Questions Questions { get; set; }

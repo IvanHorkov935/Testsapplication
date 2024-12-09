@@ -82,33 +82,33 @@ namespace Tests_application.Pages
                 Answers answers1 = new Answers()
                 {
                     ID_Question = MaxID_Ques,
-                    Correctness = "нет",
+                    Correctness = 0,
                     Contents = item.Ans1
                 };
                 Answers answers2 = new Answers()
                 {
                     ID_Question = MaxID_Ques,
-                    Correctness = "нет",
+                    Correctness = 0,
                     Contents = item.Ans2
                 };
                 Answers answers3 = new Answers()
                 {
                     ID_Question = MaxID_Ques,
-                    Correctness = "нет",
+                    Correctness = 0,
                     Contents = item.Ans3
                 };
                 Answers answers4 = new Answers()
                 {
                     ID_Question = MaxID_Ques,
-                    Correctness = "нет",
+                    Correctness = 0,
                     Contents = item.Ans4
                 };
                 switch (item.CorrNum)
                 {
-                    case 1: answers1.Correctness = "да"; break;
-                    case 2: answers2.Correctness = "да"; break;
-                    case 3: answers3.Correctness = "да"; break;
-                    case 4: answers4.Correctness = "да"; break;
+                    case 1: answers1.Correctness = 1; break;
+                    case 2: answers2.Correctness = 1; break;
+                    case 3: answers3.Correctness = 1; break;
+                    case 4: answers4.Correctness = 1; break;
                 }
                 Helper.connect.Answers.Add(answers1);
                 Helper.connect.Answers.Add(answers2);

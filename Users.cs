@@ -24,7 +24,7 @@ namespace Tests_application
         public string Login { get; set; }
         public string Password { get; set; }
         public int ID_Type { get; set; }
-        public int ID_Group { get; set; }
+        public Nullable<int> ID_Group { get; set; }
         public string Full_Name { get; set; }
     
         public virtual Groups Groups { get; set; }

@@ -16,9 +16,6 @@ using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для Login.xaml
-    /// </summary>
     public partial class Login : Page
     {
         public Login()
@@ -28,23 +25,23 @@ namespace Tests_application.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string l = login.Text;
-            string p = password.Text;
-            List<Users> TypeUser = (List<Users>)Helper.connect.Users.Where(x => x.Login == l && x.Password == p).ToList().AsEnumerable();
-            if (TypeUser.Count() == 0)
+            string picklogin = login.Text;
+            string pickpassword = password.Text;
+            Users CurrUser = Helper.connect.Users.FirstOrDefault(x => x.Login == picklogin && x.Password == pickpassword);
+            Groups CurrGroup = Helper.connect.Groups.FirstOrDefault(x => x.ID == CurrUser.ID_Group);
+            if (CurrUser == null)
             {
                 MessageBox.Show("Неправильный логин или пароль");
             }
-            else if (TypeUser[0].ID_Type == 2)
+            else if (CurrUser.ID_Type == 2)
             {
-                Helper.frame.Navigate(new MainMenu_Teacher(TypeUser[0].ID_Group));
+                Helper.frame.Navigate(new MainMenu_Teacher((int)CurrUser.ID_Group));
             }
-            else if (TypeUser[0].ID_Type == 3)
+            else if (CurrUser.ID_Type == 3)
             {
-                //var Student = Helper.connect.Users.Where(x => x.Login == l).ToList().AsEnumerable();
-                Helper.frame.Navigate(new MainMenu_Student(TypeUser[0]));
+                Helper.frame.Navigate(new MainMenu_Student(CurrUser, CurrGroup));
             }
-            else if (TypeUser[0].ID_Type == 1)
+            else if (CurrUser.ID_Type == 1)
             {
                 Helper.frame.Navigate(new MainMenu_Admin());
             }

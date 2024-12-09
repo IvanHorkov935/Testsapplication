@@ -85,27 +85,42 @@ namespace Tests_application.Pages
             _timer.Start();
         }
 
-        private void PauseTimer()
-        {
-            _timer.Stop();
-            _pauseTime = DateTime.Now;
-        }
+        //private void PauseTimer()
+        //{
+        //    _timer.Stop();
+        //    _pauseTime = DateTime.Now;
+        //}
 
-        private void ReleaseTimer()
-        {
-            var now = DateTime.Now;
-            var elapsed = now.Subtract(_pauseTime);
-            _startCountdown = _startCountdown.Add(elapsed);
-            _timer.Start();
-        }
+        //private void ReleaseTimer()
+        //{
+        //    var now = DateTime.Now;
+        //    var elapsed = now.Subtract(_pauseTime);
+        //    _startCountdown = _startCountdown.Add(elapsed);
+        //    _timer.Start();
+        //}
 
 
         public string CorrAns { get; set; }
-        public double CountQues { get; set; }
-        public int IDTest { get; set; }
-        public string TestName {  get; set; }
-        public PassTest(int idTest, TimeSpan Tend)
+        public List<Questions> questions;
+        public List<Answers> answers;
+        public Questions CurrQues;
+        public string SelectedValue;
+        public int counter = 0;
+        public int NumCorrAns = 0;
+
+        public Users CurrUser;
+        public Tests Test;
+        public PassTest(Tests Test, Users CurrUser, TimeSpan Tend)
         {
+            InitializeComponent();
+            this.CurrUser = CurrUser;
+            this.Test = Test;
+
+            Time.DataContext = this;
+            Title.DataContext = Test;
+
+            questions = Helper.connect.Questions.Where(x => x.ID_Test == Test.ID).ToList();
+
             _startTimeSpan = Tend;
             _timer = new DispatcherTimer();
             _timer.Interval = _interval;
@@ -116,107 +131,61 @@ namespace Tests_application.Pages
                 TimeToEnd = _startTimeSpan.Subtract(elapsed);
             };
             StartTimer(DateTime.Now);
+            Update_Question();
+        }
+        public void Update_Question()
+        {
+            CurrQues = questions[counter];
+            answers = Helper.connect.Answers.Where(x => x.ID_Question == CurrQues.ID).ToList();
+            CorrAns = answers.Where(x => x.Correctness == 1).First().Contents;
+            if (CurrQues == questions.Last()) { b1.Visibility = Visibility.Collapsed; b2.Visibility = Visibility.Visible; }
 
-
-            InitializeComponent();
-
-            Time.DataContext = this;
-            TestName = Helper.connect.Tests.FirstOrDefault(x => x.ID == idTest).Name;
-            Title.DataContext = this;
-
-            List<Questions> questions = (List<Questions>)Helper.connect.Questions.Where(x => x.ID_Test == idTest).ToList().AsEnumerable();
-            Questions CurrQues = questions[Params.counter];
-            if( CurrQues == questions.Last()) { b1.Visibility = Visibility.Collapsed; b2.Visibility = Visibility.Visible; }
-            List<Answers> answers = (List<Answers>)Helper.connect.Answers.Where(x => x.ID_Question == CurrQues.ID).ToList().AsEnumerable();
-
-            CorrAns = answers.Where(x => x.Correctness == "да" || x.Correctness == "да   ").First().Contents;
-            IDTest = idTest;
-            CountQues = questions.Count();
-
-            question.DataContext = CurrQues;
+            Question.DataContext = CurrQues;
             ans1.DataContext = answers[0];
             ans2.DataContext = answers[1];
             ans3.DataContext = answers[2];
             ans4.DataContext = answers[3];
+            chek1.IsChecked = false;
+            chek2.IsChecked = false;
+            chek3.IsChecked = false;
+            chek4.IsChecked = false;
 
+            counter++;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if ((string)Params.pressed.Content == CorrAns)
+            if (SelectedValue == CorrAns)
             {
-                Params.NumCorrAns += 1;
+                NumCorrAns++;
+                
             }
-            Params.counter++;
-            Helper.frame.Navigate(new PassTest(IDTest, TimeToEnd));
+            Update_Question();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if ((string)Params.pressed.Content == CorrAns)
+            if (SelectedValue == CorrAns)
             {
-                Params.NumCorrAns += 1;
+                NumCorrAns++;   
             }
-            Helper.connect.Results.Add(new Results { ID_Test = IDTest, ID_User = Params.user.ID, Per_Complete = Params.NumCorrAns / CountQues});
+            Helper.connect.Results.Add(new Results { ID_Test = Test.ID, ID_User = CurrUser.ID, Per_Complete = NumCorrAns / questions.Count()});
+            
             //Helper.connect.SaveChanges();
-            double tem = Params.NumCorrAns / CountQues;
-            Params.counter = 0;
-            Params.NumCorrAns = 0;
-            Helper.frame.Navigate(new TestFinal(tem));
-        }
-
-        private void chek1_Checked(object sender, RoutedEventArgs e)
-        {
-            Params.pressed = (CheckBox)sender;
-            if ((bool)chek2.IsChecked || (bool)chek3.IsChecked || (bool)chek4.IsChecked)
-            {
-                chek2.IsChecked = false;
-                chek3.IsChecked = false;
-                chek4.IsChecked = false;
-            }
-        }
-
-        private void chek2_Checked(object sender, RoutedEventArgs e)
-        {
-            Params.pressed = (CheckBox)sender;
-            if ((bool)chek1.IsChecked || (bool)chek3.IsChecked || (bool)chek4.IsChecked)
-            {
-                chek1.IsChecked = false;
-                chek3.IsChecked = false;
-                chek4.IsChecked = false;
-            }
-        }
-
-        private void chek3_Checked(object sender, RoutedEventArgs e)
-        {
-            Params.pressed = (CheckBox)sender;
-            if ((bool)chek2.IsChecked || (bool)chek3.IsChecked || (bool)chek1.IsChecked)
-            {
-                chek2.IsChecked = false;
-                chek1.IsChecked = false;
-                chek4.IsChecked = false;
-            }
-        }
-
-        private void chek4_Checked(object sender, RoutedEventArgs e)
-        {
-            Params.pressed = (CheckBox)sender;
-            if ((bool)chek2.IsChecked || (bool)chek3.IsChecked || (bool)chek1.IsChecked)
-            {
-                chek2.IsChecked = false;
-                chek3.IsChecked = false;
-                chek1.IsChecked = false;
-            }
+            double tem = (double)NumCorrAns / (double)questions.Count();
+            Helper.frame.Navigate(new TestFinal(tem, CurrUser));
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            CorrAns = null;
-            CountQues = 0;
-            IDTest = 0;
-            TestName = null;
-            Params.counter = 0;
-            Params.NumCorrAns = 0;
-            Helper.frame.Navigate(new MainMenu_Student(Params.user));
+            Helper.frame.Navigate(new MainMenu_Student(CurrUser, Helper.connect.Groups.FirstOrDefault(x => x.ID == CurrUser.ID_Group)));
+        }
+
+        private void chek_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is RadioButton item)
+            {
+                SelectedValue = item.Content.ToString();
+            }
         }
     }
 }

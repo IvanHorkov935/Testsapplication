@@ -14,12 +14,21 @@
     </Page.Resources>
 
     <Grid Background="White">
-        <Button Width="200" Height="50" VerticalAlignment="Top" Margin="10,10,590,0" Content="Выйти из аккаунта" FontSize="18" Click="Button_Click"/>
-        <TextBlock Text="{Binding Teacher.Full_Name}" TextAlignment="Center" Margin="310,14,306,390" FontSize="24" x:Name="Acc"/>
-        <Button Width="200" Height="50" Margin="590,10,10,390" Content="Создать тест" FontSize="24" Click="Button_Click_1"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <!--<StackPanel Margin="0,0,0,390" Orientation="Horizontal">
+            <Button  VerticalAlignment="Center"  Content="Выйти из аккаунта" FontSize="24" Click="Button_Click" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding Teacher.Full_Name}" TextAlignment="Center"  FontSize="24" x:Name="Acc"  VerticalAlignment="Center" Margin="80,0,0,0" Width="225"/>
+            <Button   Content="Создать тест" FontSize="24" Click="Button_Click_1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="100,0,0,0" />
+        </StackPanel>-->
+        <Button Width="200" Height="50" VerticalAlignment="Top" Margin="10,10,323,0" Content="Выйти из аккаунта" FontSize="20" Click="Button_Click"/>
+        <TextBlock Text="{Binding Teacher.Full_Name}" TextAlignment="Center" Margin="10,12,10,392" FontSize="24" x:Name="Acc" Grid.Column="1"/>
+        <Button Width="200" Height="50" Margin="215,10,118,390" Content="Создать тест" FontSize="20" Click="Button_Click_1"/>
 
         <ListBox ItemsSource="{Binding UsersCollection}"
-                 SelectedItem="{Binding SelectedUser}" Margin="0,65,323,50">
+                 SelectedItem="{Binding SelectedUser}" Margin="10,80,10,10">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">
@@ -30,7 +39,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel DataContext="{Binding SelectedUser}" Margin="482,65,10,242">
+        <StackPanel DataContext="{Binding SelectedUser}" Margin="10,80,10,240" Grid.Column="1">
             <TextBlock Text="Выбранный ученик" Margin="0,0,0,10" />
             <TextBlock Text="ФИО" />
             <TextBlock Text="{Binding Full_Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
@@ -39,7 +48,7 @@
             <TextBlock Text="Логин" />
             <TextBlock Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
         </StackPanel>
-        <ListBox Height="192" x:Name="results" ItemsSource="{Binding UserResultsCollection, UpdateSourceTrigger=PropertyChanged}" Margin="482,208,10,50">
+        <ListBox x:Name="results" ItemsSource="{Binding UserResultsCollection, UpdateSourceTrigger=PropertyChanged}" Margin="10,215,10,10" Grid.Column="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">

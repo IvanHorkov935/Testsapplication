@@ -27,21 +27,22 @@ namespace Tests_application.Pages
         {
             string picklogin = login.Text;
             string pickpassword = password.Text;
-            Users CurrUser = Helper.connect.Users.FirstOrDefault(x => x.Login == picklogin && x.Password == pickpassword);
-            Groups CurrGroup = Helper.connect.Groups.FirstOrDefault(x => x.ID == CurrUser.ID_Group);
-            if (CurrUser == null)
+
+            DataHelper dataHelper = new DataHelper(pickpassword, picklogin);
+
+            if (DataHelper.CurrentUser == null)
             {
                 MessageBox.Show("Неправильный логин или пароль");
             }
-            else if (CurrUser.ID_Type == 2)
+            else if (DataHelper.CurrentUser.ID_Type == 2)
             {
-                Helper.frame.Navigate(new MainMenu_Teacher((int)CurrUser.ID_Group));
+                Helper.frame.Navigate(new MainMenu_Teacher());
             }
-            else if (CurrUser.ID_Type == 3)
+            else if (DataHelper.CurrentUser.ID_Type == 3)
             {
-                Helper.frame.Navigate(new MainMenu_Student(CurrUser, CurrGroup));
+                Helper.frame.Navigate(new MainMenu_Student());
             }
-            else if (CurrUser.ID_Type == 1)
+            else if (DataHelper.CurrentUser.ID_Type == 1)
             {
                 Helper.frame.Navigate(new MainMenu_Admin());
             }
@@ -49,7 +50,7 @@ namespace Tests_application.Pages
             {
                 MessageBox.Show("Неправтльный логин или пароль");
             }
-            //Helper.frame.Navigate(new TestFinal(50));
+            //Helper.frame.Navigate(new MainMenu_Teacher());
         }
 
         private void login_GotMouseCapture(object sender, MouseEventArgs e)

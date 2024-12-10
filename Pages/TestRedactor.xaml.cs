@@ -17,10 +17,7 @@ using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для TestRedactor.xaml
-    /// </summary>
-    class Exercise
+    public class Exercise
     {
         public string Ques { get; set; }
         public string Ans1 { get; set; }
@@ -29,28 +26,22 @@ namespace Tests_application.Pages
         public string Ans4 { get; set; }
         public int CorrNum { get; set; }
     }
-    class ContainsRed
-    {
-        public static int Counter = 0;
-        public static ObservableCollection<Exercise> content = new ObservableCollection<Exercise>() {};
-        public static string CorrAns = "";
-    }
 
     public partial class TestRedactor : Page
     {
-        public int idGroup { get; set; }
-        public TestRedactor(int IDGroup)
+        public int Counter = 0;
+        public ObservableCollection<Exercise> NewQuestions = new ObservableCollection<Exercise>();
+        public TestRedactor()
         {
             InitializeComponent();
 
-            idGroup = IDGroup;
-            TestsListBox.ItemsSource = ContainsRed.content;
+            TestsListBox.ItemsSource = NewQuestions;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ContainsRed.content.Add(new Exercise());
-            if (ContainsRed.content.Count() == 1) { TestsListBox.Items.MoveCurrentToPosition(0); }
+            NewQuestions.Add(new Exercise());
+            if (NewQuestions.Count() == 1) { TestsListBox.Items.MoveCurrentToPosition(0); }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -63,12 +54,12 @@ namespace Tests_application.Pages
             Helper.connect.SaveChanges();
             Groups_Tests groups = new Groups_Tests()
             {
-                ID_Group = idGroup,
+                ID_Group = DataHelper.CurrentUserGroup.ID,
                 ID_Tests = Helper.connect.Tests.Max(x => x.ID),
             };
             Helper.connect.Groups_Tests.Add(groups);
             Helper.connect.SaveChanges();
-            foreach (var item in ContainsRed.content)
+            foreach (var item in NewQuestions)
             {
                 int MaxID_Test = Helper.connect.Tests.Max(x => x.ID);
                 Questions que = new Questions()
@@ -116,7 +107,7 @@ namespace Tests_application.Pages
                 Helper.connect.Answers.Add(answers4);
                 Helper.connect.SaveChanges();
             }
-            Helper.frame.Navigate(new MainMenu_Teacher(idGroup));
+            Helper.frame.Navigate(new MainMenu_Teacher());
         }
 
         private childItem FindVisualChild<childItem>(DependencyObject obj)
@@ -152,30 +143,30 @@ namespace Tests_application.Pages
             RadioButton myRadio3 = (RadioButton)myDataTemplate.FindName("b3", myContentPresenter);
             RadioButton myRadio4 = (RadioButton)myDataTemplate.FindName("b4", myContentPresenter);
 
-            myRadio1.GroupName = $"v{ContainsRed.Counter}";
-            myRadio2.GroupName = $"v{ContainsRed.Counter}";
-            myRadio3.GroupName = $"v{ContainsRed.Counter}";
-            myRadio4.GroupName = $"v{ContainsRed.Counter}";
+            myRadio1.GroupName = $"v{Counter}";
+            myRadio2.GroupName = $"v{Counter}";
+            myRadio3.GroupName = $"v{Counter}";
+            myRadio4.GroupName = $"v{Counter}";
 
             StackPanel stack = (StackPanel)pressed.Parent;
             Object obj = stack.DataContext;
             int index = TestsListBox.Items.IndexOf(obj);
             TestsListBox.Items.MoveCurrentToPosition(index);
 
-            ContainsRed.Counter += 1;
+            Counter++;
             
             Exercise a = (Exercise)TestsListBox.SelectedItem;
-            int ind = ContainsRed.content.IndexOf(a);
+            int ind = NewQuestions.IndexOf(a);
 
-            if ((bool)myRadio1.IsChecked) { ContainsRed.content[ind].CorrNum = 1; }
-            if ((bool)myRadio2.IsChecked) { ContainsRed.content[ind].CorrNum = 2; }
-            if ((bool)myRadio3.IsChecked) { ContainsRed.content[ind].CorrNum = 3; }
-            if ((bool)myRadio4.IsChecked) { ContainsRed.content[ind].CorrNum = 4; }
+            if ((bool)myRadio1.IsChecked) { NewQuestions[ind].CorrNum = 1; }
+            if ((bool)myRadio2.IsChecked) { NewQuestions[ind].CorrNum = 2; }
+            if ((bool)myRadio3.IsChecked) { NewQuestions[ind].CorrNum = 3; }
+            if ((bool)myRadio4.IsChecked) { NewQuestions[ind].CorrNum = 4; }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Helper.frame.Navigate(new MainMenu_Teacher(idGroup));
+            Helper.frame.Navigate(new MainMenu_Teacher());
         }
     }
 }

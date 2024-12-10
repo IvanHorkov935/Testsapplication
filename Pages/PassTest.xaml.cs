@@ -85,20 +85,6 @@ namespace Tests_application.Pages
             _timer.Start();
         }
 
-        //private void PauseTimer()
-        //{
-        //    _timer.Stop();
-        //    _pauseTime = DateTime.Now;
-        //}
-
-        //private void ReleaseTimer()
-        //{
-        //    var now = DateTime.Now;
-        //    var elapsed = now.Subtract(_pauseTime);
-        //    _startCountdown = _startCountdown.Add(elapsed);
-        //    _timer.Start();
-        //}
-
 
         public string CorrAns { get; set; }
         public List<Questions> questions;
@@ -172,12 +158,12 @@ namespace Tests_application.Pages
             
             //Helper.connect.SaveChanges();
             double tem = (double)NumCorrAns / (double)questions.Count();
-            Helper.frame.Navigate(new TestFinal(tem, CurrUser));
+            Helper.frame.Navigate(new TestFinal(tem));
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Helper.frame.Navigate(new MainMenu_Student(CurrUser, Helper.connect.Groups.FirstOrDefault(x => x.ID == CurrUser.ID_Group)));
+            Helper.frame.Navigate(new MainMenu_Student());
         }
 
         private void chek_Checked(object sender, RoutedEventArgs e)

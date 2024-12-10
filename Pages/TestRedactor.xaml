@@ -9,7 +9,17 @@
       Title="TestRedactor">
 
     <Grid Background="White">
-        <ListBox Margin="0,84,18,84" x:Name="TestsListBox" IsSynchronizedWithCurrentItem="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <ListBox  x:Name="TestsListBox" IsSynchronizedWithCurrentItem="True" Grid.Row="1" Grid.ColumnSpan="3">
             <ListBox.ItemTemplate>
                 <DataTemplate x:Name="myDataTemplate">
                     <Grid Background="White" Width="700" Height="150">
@@ -36,10 +46,10 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button Width="150" Height="50" Margin="37,19,613,381" Content="Добавить вопрос" FontSize="16" Click="Button_Click"/>
-        <Button Width="150" Height="50" Margin="632,18,18,382" Content="Завершить" Click="Button_Click_1" FontSize="18"/>
-        <Button Width="100" Height="49" Margin="350,371,350,30" Content="Назад" FontSize="24" Click="Button_Click_2"/>
-        <TextBlock Width="100" Margin="213,31,487,393" Text="Название" TextAlignment="Center" FontSize="20"/>
-        <TextBox Width="258" Margin="318,31,0,393" HorizontalAlignment="Left" x:Name="TestName"/>
+        <Button Width="150" Height="50"  Content="Добавить вопрос" FontSize="16" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+        <Button Width="150" Height="50"  Content="Завершить" Click="Button_Click_1" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2" Margin="0,0,10,0"/>
+        <Button Width="100" Height="49" Margin="150,5,150,6" Content="Назад" FontSize="24" Click="Button_Click_2" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
+        <TextBlock x:Name="textBlock" Width="100"  Text="Название:" TextAlignment="Center" FontSize="20" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+        <TextBox Width="258"  HorizontalAlignment="Right" x:Name="TestName" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,20,0" Height="{Binding ActualHeight, ElementName=textBlock, Mode=OneWay}"/>
     </Grid>
 </Page>

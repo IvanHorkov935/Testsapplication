@@ -12,13 +12,13 @@ namespace Tests_application
     using System;
     using System.Collections.Generic;
     
-    public partial class Answers
+    public partial class Users_Groups
     {
         public int ID { get; set; }
-        public int ID_Question { get; set; }
-        public Nullable<bool> Correctness { get; set; }
-        public string Contents { get; set; }
+        public int ID_User { get; set; }
+        public int ID_Group { get; set; }
     
-        public virtual Questions Questions { get; set; }
+        public virtual Groups Groups { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

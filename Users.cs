@@ -18,18 +18,19 @@ namespace Tests_application
         public Users()
         {
             this.Results = new HashSet<Results>();
+            this.Users_Groups = new HashSet<Users_Groups>();
         }
     
         public int ID { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public int ID_Type { get; set; }
-        public Nullable<int> ID_Group { get; set; }
         public string Full_Name { get; set; }
     
-        public virtual Groups Groups { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Results> Results { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Users_Groups> Users_Groups { get; set; }
         public virtual Users_Types Users_Types { get; set; }
     }
 }

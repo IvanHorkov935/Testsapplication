@@ -27,7 +27,6 @@ namespace Tests_application.Pages
         private TimeSpan _startTimeSpan {  get; set; } 
         private TimeSpan _timeToEnd; 
         private TimeSpan _interval = TimeSpan.FromMilliseconds(15); 
-        private DateTime _pauseTime;
         private DispatcherTimer _timer;
 
         public TimeSpan TimeToEnd
@@ -123,7 +122,7 @@ namespace Tests_application.Pages
         {
             CurrQues = questions[counter];
             answers = Helper.connect.Answers.Where(x => x.ID_Question == CurrQues.ID).ToList();
-            CorrAns = answers.Where(x => x.Correctness == 1).First().Contents;
+            CorrAns = answers.Where(x => x.Correctness == true).First().Contents;
             if (CurrQues == questions.Last()) { b1.Visibility = Visibility.Collapsed; b2.Visibility = Visibility.Visible; }
 
             Question.DataContext = CurrQues;

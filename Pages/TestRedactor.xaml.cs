@@ -46,67 +46,60 @@ namespace Tests_application.Pages
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Tests tests = new Tests()
+            Tests test = new Tests()
             {
                 Name = TestName.Text,
             };
-            Helper.connect.Tests.Add(tests);
-            Helper.connect.SaveChanges();
-            Groups_Tests groups = new Groups_Tests()
-            {
-                ID_Group = DataHelper.CurrentUserGroup.ID,
-                ID_Tests = Helper.connect.Tests.Max(x => x.ID),
-            };
-            Helper.connect.Groups_Tests.Add(groups);
-            Helper.connect.SaveChanges();
+            test.Groups_Tests.Add(new Groups_Tests() { ID_Group = SingletoneTeacher.getInstance("", "").SelectedGroup.ID, ID_Tests = test.ID});
+
             foreach (var item in NewQuestions)
             {
-                int MaxID_Test = Helper.connect.Tests.Max(x => x.ID);
                 Questions que = new Questions()
                 {
-                    ID_Test = MaxID_Test,
+                    ID_Test = test.ID,
                     Contents = item.Ques,
                 };
-                Helper.connect.Questions.Add(que);
-                Helper.connect.SaveChanges();
-                int MaxID_Ques = Helper.connect.Questions.Max(x => x.ID);
+                test.Questions.Add(que);
                 Answers answers1 = new Answers()
                 {
-                    ID_Question = MaxID_Ques,
-                    Correctness = 0,
+                    ID_Question = que.ID,
+                    Correctness = false,
                     Contents = item.Ans1
                 };
                 Answers answers2 = new Answers()
                 {
-                    ID_Question = MaxID_Ques,
-                    Correctness = 0,
+                    ID_Question = que.ID,
+                    Correctness = false,
                     Contents = item.Ans2
                 };
                 Answers answers3 = new Answers()
                 {
-                    ID_Question = MaxID_Ques,
-                    Correctness = 0,
+                    ID_Question = que.ID,
+                    Correctness = false,
                     Contents = item.Ans3
                 };
                 Answers answers4 = new Answers()
                 {
-                    ID_Question = MaxID_Ques,
-                    Correctness = 0,
+                    ID_Question = que.ID,
+                    Correctness = false,
                     Contents = item.Ans4
                 };
+                MessageBox.Show(item.CorrNum.ToString());
                 switch (item.CorrNum)
                 {
-                    case 1: answers1.Correctness = 1; break;
-                    case 2: answers2.Correctness = 1; break;
-                    case 3: answers3.Correctness = 1; break;
-                    case 4: answers4.Correctness = 1; break;
+                    case 1: answers1.Correctness = true; break;
+                    case 2: answers2.Correctness = true; break;
+                    case 3: answers3.Correctness = true; break;
+                    case 4: answers4.Correctness = true; break;
                 }
-                Helper.connect.Answers.Add(answers1);
-                Helper.connect.Answers.Add(answers2);
-                Helper.connect.Answers.Add(answers3);
-                Helper.connect.Answers.Add(answers4);
-                Helper.connect.SaveChanges();
+                que.Answers.Add(answers1);
+                que.Answers.Add(answers2);
+                que.Answers.Add(answers3);
+                que.Answers.Add(answers4);
             }
+
+            Helper.connect.Tests.Add(test);
+            Helper.connect.SaveChanges();
             Helper.frame.Navigate(new MainMenu_Teacher());
         }
 
@@ -155,8 +148,8 @@ namespace Tests_application.Pages
 
             Counter++;
             
-            Exercise a = (Exercise)TestsListBox.SelectedItem;
-            int ind = NewQuestions.IndexOf(a);
+            Exercise exercise = (Exercise)TestsListBox.SelectedItem;
+            int ind = NewQuestions.IndexOf(exercise);
 
             if ((bool)myRadio1.IsChecked) { NewQuestions[ind].CorrNum = 1; }
             if ((bool)myRadio2.IsChecked) { NewQuestions[ind].CorrNum = 2; }

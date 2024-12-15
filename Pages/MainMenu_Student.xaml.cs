@@ -30,22 +30,24 @@ namespace Tests_application.Pages
     {
         ObservableCollection<Tests> StudentTests = new ObservableCollection<Tests>();
         ObservableCollection<ForListBox> TestsResults = new ObservableCollection<ForListBox>();
+        SingletoneStudent Student;
         public MainMenu_Student()
         {
+            Student = SingletoneStudent.getInstance("", "");
             InitializeComponent();
 
-            UserName.Text = $"Имя: {DataHelper.CurrentUser.Full_Name}";
-            UserGroup.Text = $"Группа: {DataHelper.CurrentUserGroup.Name}";
+            UserName.Text = $"Имя: {Student.CurrentUser.Full_Name}";
+            UserGroup.Text = $"Группа: {Student.CurrentUserGroup.Name}";
 
-            foreach (Tests test in DataHelper.CurrentUserTests)
+            foreach (Tests test in Student.CurrentUserTests)
             {
                 StudentTests.Add(test);
             }
 
             foreach(var i in StudentTests)
             {
-                if (Helper.connect.Results.Where(x => x.ID_User == DataHelper.CurrentUser.ID && x.ID_Test == i.ID).Count() == 0) { TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = 0 }); continue; }
-                var ResultsThisTest = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == DataHelper.CurrentUser.ID);
+                if (Helper.connect.Results.Where(x => x.ID_User == Student.CurrentUser.ID && x.ID_Test == i.ID).Count() == 0) { TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = 0 }); continue; }
+                var ResultsThisTest = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == Student.CurrentUser.ID);
                 double percomp = (double)ResultsThisTest.Max(x => x.Per_Complete);
                 TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = percomp, PerCompForProgress = (int)(percomp * 100) });
             }
@@ -62,7 +64,7 @@ namespace Tests_application.Pages
         {
             var test = TestsListBox.SelectedItem as ForListBox;
             Tests Test = Helper.connect.Tests.First(x => x.Name == test.NameTest);
-            Helper.frame.Navigate(new PassTest(Test, DataHelper.CurrentUser,  TimeSpan.FromMinutes(5)));
+            Helper.frame.Navigate(new PassTest(Test, Student.CurrentUser,  TimeSpan.FromMinutes(5)));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

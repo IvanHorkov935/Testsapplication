@@ -13,21 +13,28 @@
     </Page.Resources>
 
     <Grid Background="White">
-        <TextBlock Margin="10,10,10,387" TextAlignment="Center" Text="Результаты теста:" FontSize="36"/>
-        <Border Margin="10,68,400,161" Background="#FFE6E6E6">
-            <local:SemicircleProgressBar x:Name="Progress1"
-                Value="0" Minimum="0" Maximum="100"
-                CuttingFactor="0.8"
-                VerticalAlignment="Center" HorizontalAlignment="Center"
-                Height="171" Width="276" Background="#FFFFFEFE"/>
-        </Border>
-        <TextBlock Margin="134,190,524,215" TextAlignment="Center" FontSize="36" x:Name="ResBlock" Text="{Binding ResForText, Converter={StaticResource PercentConvert}}"/>
-        <StackPanel Margin="405,68,10,161">
-            <TextBlock Height="42" Text="Ваша оценка:" TextAlignment="Center" FontSize="36"/>
-            <Border Height="55"/>
-            <TextBlock Height="94" Width="159" Text="" TextAlignment="Center" FontSize="72" Background="White" Foreground="#FFF1F1F1" x:Name="Grade"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock  TextAlignment="Center" Text="Результаты теста:" FontSize="36" Grid.Row="0"/>
 
-        <Button Margin="321,392,321,10" Content="В меню" FontSize="24" Click="Button_Click"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20">
+            <Grid  Background="#FFE6E6E6" VerticalAlignment="Center">
+                <local:SemicircleProgressBar x:Name="Progress1"
+                    Value="0" Minimum="0" Maximum="100"
+                    CuttingFactor="0.8"
+                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Height="171" Width="276" Background="#FFFFFEFE"/>
+                <TextBlock  TextAlignment="Center" FontSize="36" x:Name="ResBlock" Text="{Binding ResForText, Converter={StaticResource PercentConvert}}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            </Grid>
+            <StackPanel Margin="200,0,0,0" VerticalAlignment="Center">
+                <TextBlock Height="42" Text="Ваша оценка:" TextAlignment="Center" FontSize="36" Margin="0,0,0,40"/>
+                <TextBlock Height="94" Width="159" Text="" TextAlignment="Center" FontSize="72" Background="White" Foreground="#FFF1F1F1" x:Name="Grade"/>
+            </StackPanel>
+        </StackPanel>
+  
+        <Button Grid.Row="2" Content="В меню" FontSize="24" Click="Button_Click" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10" Height="40" Width="100"/>
     </Grid>
 </Page>

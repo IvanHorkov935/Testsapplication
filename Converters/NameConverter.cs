@@ -14,7 +14,7 @@ namespace Tests_application.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             int testnum = (int)value;
-            List<Tests> test = (List<Tests>)Helper.connect.Tests.Where(x => x.ID == testnum).ToList().AsEnumerable();
+            List<Tests> test = Helper.connect.Tests.Where(x => x.ID == testnum).ToList();
             foreach(var a in test)
             {
                 return a.Name;

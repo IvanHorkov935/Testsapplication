@@ -16,26 +16,21 @@ using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для MainMenu_Teacher.xaml
-    /// </summary>
-    public partial class MainMenu_Teacher : Page
+    public partial class TeacherMatchGroup : Page
     {
-        public MainMenu_Teacher()
+        public TeacherMatchGroup()
         {
             InitializeComponent();
 
-            DataContext = new ApplicationViewModel();
+            List<Groups> groups = SingletoneTeacher.getInstance("", "").CurrentUserGroups;
+            GroupsListBox.ItemsSource = groups;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void GroupsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Helper.frame.Navigate(new Login());
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Helper.frame.Navigate(new TestRedactor());
+            Groups group = GroupsListBox.SelectedItem as Groups;
+            SingletoneTeacher.getInstance("", "").SelectedGroup = group;
+            Helper.frame.Navigate(new MainMenu_Teacher());
         }
     }
 }

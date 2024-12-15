@@ -28,21 +28,24 @@ namespace Tests_application.Pages
             string picklogin = login.Text;
             string pickpassword = password.Text;
 
-            DataHelper dataHelper = new DataHelper(pickpassword, picklogin);
+            //DataHelper dataHelper = new DataHelper(pickpassword, picklogin);
+            Users CurrentUser = Helper.connect.Users.FirstOrDefault(x => x.Login == picklogin && x.Password == pickpassword);
 
-            if (DataHelper.CurrentUser == null)
+            if (CurrentUser == null)
             {
                 MessageBox.Show("Неправильный логин или пароль");
             }
-            else if (DataHelper.CurrentUser.ID_Type == 2)
+            else if (CurrentUser.ID_Type == 2)
             {
-                Helper.frame.Navigate(new MainMenu_Teacher());
+                SingletoneTeacher Teacher = SingletoneTeacher.getInstance(pickpassword, picklogin);
+                Helper.frame.Navigate(new TeacherMatchGroup());
             }
-            else if (DataHelper.CurrentUser.ID_Type == 3)
+            else if (CurrentUser.ID_Type == 3)
             {
+                SingletoneStudent Student = SingletoneStudent.getInstance(pickpassword, picklogin);
                 Helper.frame.Navigate(new MainMenu_Student());
             }
-            else if (DataHelper.CurrentUser.ID_Type == 1)
+            else if (CurrentUser.ID_Type == 1)
             {
                 Helper.frame.Navigate(new MainMenu_Admin());
             }

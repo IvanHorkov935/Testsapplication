@@ -11,13 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
     /// <summary>
     /// Логика взаимодействия для AddGroup.xaml
     /// </summary>
-    public partial class AddGroup : Window
+    public partial class AddGroup : Page
     {
         public AddGroup()
         {
@@ -29,8 +30,15 @@ namespace Tests_application.Pages
         }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
+            if(NewGroupName == null) { MessageBox.Show("Введите название группы"); return; }
+            Helper.connect.Groups.Add(new Groups() { Name = NewGroupName});
+            //Helper.connect.SaveChanges();
+            Helper.frame.Navigate(new MainMenu_Admin());
         }
 
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Helper.frame.Navigate(new MainMenu_Admin());
+        }
     }
 }

@@ -19,7 +19,7 @@
             <RowDefinition Height="3*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <ListBox  x:Name="TestsListBox" IsSynchronizedWithCurrentItem="True" Grid.Row="1" Grid.ColumnSpan="3">
+        <ListBox  x:Name="TestsListBox" IsSynchronizedWithCurrentItem="True" Grid.Row="1" Grid.ColumnSpan="3" ScrollViewer.CanContentScroll="False">
             <ListBox.ItemTemplate>
                 <DataTemplate x:Name="myDataTemplate">
                     <Grid Background="White" Width="700" Height="150">
@@ -46,10 +46,18 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button Width="150" Height="50"  Content="Добавить вопрос" FontSize="16" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
-        <Button Width="150" Height="50"  Content="Завершить" Click="Button_Click_1" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2" Margin="0,0,10,0"/>
-        <Button Width="100" Height="49" Margin="150,5,150,6" Content="Назад" FontSize="24" Click="Button_Click_2" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
-        <TextBlock x:Name="textBlock" Width="100"  Text="Название:" TextAlignment="Center" FontSize="20" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
-        <TextBox Width="258"  HorizontalAlignment="Right" x:Name="TestName" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,20,0" Height="{Binding ActualHeight, ElementName=textBlock, Mode=OneWay}"/>
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal">
+            <Button Width="150" Height="50"  Content="Добавить вопрос" FontSize="16" Click="Button_Click" 
+                    HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBlock x:Name="textBlock" Width="100"  Text="Название:" TextAlignment="Center" FontSize="20" 
+                       Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0"/>
+            <TextBox Width="258"  HorizontalAlignment="Right" x:Name="TestName" Grid.Column="1" VerticalAlignment="Center" 
+                     Margin="0,0,20,0" Height="{Binding ActualHeight, ElementName=textBlock, Mode=OneWay}"/>
+            <Button Width="150" Height="50"  Content="Завершить" Click="Button_Click_1" FontSize="18" 
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="2" Margin="50,0,0,0"/>
+        </StackPanel>
+        
+        <Button Width="100" Height="49"  Content="Назад" FontSize="24" Click="Button_Click_2" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        
     </Grid>
 </Page>

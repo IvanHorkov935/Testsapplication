@@ -12,43 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
     /// <summary>
     /// Логика взаимодействия для AddUser.xaml
     /// </summary>
-    public partial class AddUser : Window
+    public partial class AddUser : Page
     {
+        public int NewUserType = 0;
         public AddUser()
         {
             InitializeComponent();
-
-            Users user = NewUser;
         }
 
-        public Users newUser = new Users();
-        public Users NewUser
-        {
-            get
-            {
-                return newUser;
-            }
-            set
-            {
-                newUser.ID_Type = value.ID_Type;
-            }
-        }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if(newUser.ID_Type != 0 && t1.Text != null && t2.Text != null && t3.Text != null)
+            if(NewUserType != 0 && login.Text != null && password.Text != null && fullname.Text != null)
             {
-                newUser.Login = t1.Text;
-                newUser.Password = t2.Text;
-                newUser.ID_Group = 7;
-                newUser.Full_Name = t3.Text;
-                
-                DialogResult = true;
+                Helper.connect.Users.Add(new Users() { ID_Type = NewUserType, Login = login.Text, Password = password.Text, Full_Name = fullname.Text});
+                Helper.connect.SaveChanges();
+                Helper.frame.Navigate(new MainMenu_Admin());
             }
             else
             {
@@ -66,16 +51,21 @@ namespace Tests_application.Pages
                 switch (selectedValue)
                 {
                     case "Админ":
-                        newUser = new Users() { ID_Type = 1};
+                        NewUserType = 1;
                         break;
                     case "Учитель":
-                        newUser = new Users() { ID_Type = 2 };
+                        NewUserType = 2;
                         break;
                     case "Ученик":
-                        newUser = new Users() { ID_Type = 3 };
+                        NewUserType = 3;
                         break;
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Helper.frame.Navigate(new MainMenu_Admin());
         }
     }
 }

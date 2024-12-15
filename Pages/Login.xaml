@@ -9,22 +9,17 @@
       Title="Login">
 
     <Grid Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Margin="84,10,84,6" Grid.Column="1">
-            <TextBlock  Text="Авторизация" TextAlignment="Center" FontSize="20" Margin="0,50,0,0"/>
-            <Border Height="32"/>
-            <TextBox  x:Name="login" Text="" FontSize="18" GotMouseCapture="login_GotMouseCapture"  LostKeyboardFocus="login_LostKeyboardFocus" Initialized="login_Initialized"/>
-            <Border Height="31"/>
-            <TextBox  x:Name="password" Text="" FontSize="18" GotMouseCapture="password_GotMouseCapture"  LostKeyboardFocus="password_LostKeyboardFocus" Initialized="password_Initialized"/>
+        <StackPanel  Grid.Column="1">
+            <TextBlock  Text="Авторизация" TextAlignment="Center" FontSize="20" Margin="0,90,0,0"/>
+            <TextBox  x:Name="login" Text="" FontSize="18" GotMouseCapture="login_GotMouseCapture"  LostKeyboardFocus="login_LostKeyboardFocus" Initialized="login_Initialized" Margin="0,50,0,0"/>
+            <TextBox  x:Name="password" Text="" FontSize="18" GotMouseCapture="password_GotMouseCapture"  LostKeyboardFocus="password_LostKeyboardFocus" Initialized="password_Initialized" Margin="0,20,0,0"/>
+            <Button Content="Войти"  FontSize="24" Click="Button_Click" Margin="0,40,0,0" />
         </StackPanel>
-        <Button Content="Войти"  FontSize="24" Click="Button_Click" Grid.Column="1" Margin="146,0,174,30" Grid.Row="1" VerticalAlignment="Bottom"/>
+        
     </Grid>
 </Page>

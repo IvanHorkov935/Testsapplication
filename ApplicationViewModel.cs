@@ -16,8 +16,8 @@ namespace Tests_application
     public class ApplicationViewModel : INotifyPropertyChanged
     {
         private User selectedUser;
-        public Users Teacher { get; set; }
-        public int CurrentGroup { get; set; }
+        public Groups CurrentGroup { get; set; }
+        public string TeacherName { get; set; }
         public ObservableCollection<User> UsersCollection { get; set; }
         public ObservableCollection<Results> UserResultsCollection { get; set; }
         public ObservableCollection<Tests> UserTestsCollection { get; set; }
@@ -27,50 +27,60 @@ namespace Tests_application
             set
             {
                 selectedUser = value;
-                if (UserResultsCollection != null) { UserResultsCollection.Clear(); }
-
-                foreach(Tests test in UserTestsCollection)
-                {
-                    if (Helper.connect.Results.Where(x => x.ID_User == selectedUser.ID && x.ID_Test == test.ID).FirstOrDefault() == null)
-                    {
-                        UserResultsCollection.Add(new Results() { ID_Test = test.ID, ID_User = selectedUser.ID, Per_Complete = 0 });
-                    }
-                    else
-                    {
-                        UserResultsCollection.Add(test.Results.First(x => x.Per_Complete == test.Results.Max(z => z.Per_Complete)));
-                    }
-                }
-
-                OnPropertyChanged("SelectedUser");
+                SelectedUser_Changed();
             }
         }
 
         public ApplicationViewModel()
         {
-            Teacher = DataHelper.CurrentUser;
-            CurrentGroup = DataHelper.CurrentUserGroup.ID;
+            SingletoneTeacher Teacher = SingletoneTeacher.getInstance("", "");
+            CurrentGroup = Teacher.SelectedGroup;
+            TeacherName = Teacher.CurrentUser.Full_Name;
 
             UserTestsCollection = new ObservableCollection<Tests>();
             UserResultsCollection = new ObservableCollection<Results>();
-            UsersCollection = new ObservableCollection<User>();
-            List<Users> col = (List<Users>)Helper.connect.Users.Where(x => x.ID_Type == 3 && x.ID_Group == DataHelper.CurrentUserGroup.ID).ToList().AsEnumerable();
-            foreach (var user in col)
+            if(Teacher.Students.Count() == 0)
             {
-                UsersCollection.Add(new User
+                foreach (var usergroups in Helper.connect.Users_Groups.Where(x => x.ID_Group == CurrentGroup.ID))
                 {
-                    ID = user.ID,
-                    Login = user.Login,
-                    Password = user.Password,
-                    ID_Group = (int)user.ID_Group,
-                    ID_Type = user.ID_Type,
-                    Full_Name = user.Full_Name,
-                });
+                    if (Helper.connect.Users.First(x => x.ID == usergroups.ID).ID_Type == 3) { Teacher.Students.Add(Helper.connect.Users.First(x => x.ID == usergroups.ID)); }
+                }
             }
+            
+            UsersCollection = new ObservableCollection<User>();
+            foreach(Users user in Teacher.Students) { UsersCollection.Add(new User
+            {
+                ID = user.ID,
+                Login = user.Login,
+                Password = user.Password,
+                ID_Type = user.ID_Type,
+                ID_Group = Teacher.SelectedGroup.ID,
+                Full_Name = user.Full_Name,
+            }); }
 
-            foreach (var item in Helper.connect.Groups_Tests.Where(x => x.ID_Group == CurrentGroup))
+            foreach (var item in Helper.connect.Groups_Tests.Where(x => x.ID_Group == CurrentGroup.ID))
             {
                 UserTestsCollection.Add(item.Tests);
             }
+        }
+
+        public void SelectedUser_Changed()
+        {
+            if (UserResultsCollection != null) { UserResultsCollection.Clear(); }
+
+            foreach (Tests test in UserTestsCollection)
+            {
+                if (Helper.connect.Results.Where(x => x.ID_User == selectedUser.ID && x.ID_Test == test.ID).FirstOrDefault() == null)
+                {
+                    UserResultsCollection.Add(new Results() { ID_Test = test.ID, ID_User = selectedUser.ID, Per_Complete = 0 });
+                }
+                else
+                {
+                    UserResultsCollection.Add(test.Results.First(x => x.Per_Complete == test.Results.Max(z => z.Per_Complete)));
+                }
+            }
+
+            OnPropertyChanged("SelectedUser");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

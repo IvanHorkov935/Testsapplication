@@ -34,8 +34,8 @@
             <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek4" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
         </StackPanel>
 
-        <Button Height="50" Margin="10,20,0,10" HorizontalAlignment="Left" Width="169" Content="Ответить" FontSize="22" Click="Button_Click" Grid.Row="2"/>
-        <Button Width="169" Height="50" Margin="10,20,0,10" HorizontalAlignment="Left" Content="Завершить" FontSize="22" Click="Button_Click_1" Grid.Row="2" Visibility="Collapsed" />
+        <Button x:Name="Next" Height="50" Margin="10,20,0,10" HorizontalAlignment="Left" Width="169" Content="Ответить" FontSize="22" Click="Button_Click" Grid.Row="2"/>
+        <Button x:Name="Finish" Width="169" Height="50" Margin="10,20,0,10" HorizontalAlignment="Left" Content="Завершить" FontSize="22" Click="Button_Click_1" Grid.Row="2" Visibility="Collapsed" />
         <Button  Content="В меню" FontSize="22" Click="Button_Click_2" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Height="50" Width="130"/>
     </Grid>
 </Page>

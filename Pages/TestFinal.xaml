@@ -9,6 +9,7 @@
       Title="TestFinal" Loaded="Window_OnLoaded">
 
     <Page.Resources>
+        <local2:GradeConverter x:Key="GradeConverter"/>
         <local2:PercentConvert x:Key="PercentConvert"/>
     </Page.Resources>
 
@@ -29,9 +30,10 @@
                     Height="171" Width="276" Background="#FFFFFEFE"/>
                 <TextBlock  TextAlignment="Center" FontSize="36" x:Name="ResBlock" Text="{Binding ResForText, Converter={StaticResource PercentConvert}}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
             </Grid>
-            <StackPanel Margin="200,0,0,0" VerticalAlignment="Center">
+            <StackPanel Margin="200,0,0,0" VerticalAlignment="Center" x:Name="GradeNumber">
                 <TextBlock Height="42" Text="Ваша оценка:" TextAlignment="Center" FontSize="36" Margin="0,0,0,40"/>
-                <TextBlock Height="94" Width="159" Text="" TextAlignment="Center" FontSize="72" Background="White" Foreground="#FFF1F1F1" x:Name="Grade"/>
+                <TextBlock Height="94" Width="159" Text="{Binding Result, ConverterParameter=1, Converter={StaticResource GradeConverter}}" 
+                           TextAlignment="Center" FontSize="72" Background="{Binding Result, ConverterParameter=2, Converter={StaticResource GradeConverter}}" Foreground="#FFF1F1F1" x:Name="Grade"/>
             </StackPanel>
         </StackPanel>
   

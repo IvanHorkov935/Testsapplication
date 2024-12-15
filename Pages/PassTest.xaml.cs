@@ -123,7 +123,7 @@ namespace Tests_application.Pages
             CurrQues = questions[counter];
             answers = Helper.connect.Answers.Where(x => x.ID_Question == CurrQues.ID).ToList();
             CorrAns = answers.Where(x => x.Correctness == true).First().Contents;
-            if (CurrQues == questions.Last()) { b1.Visibility = Visibility.Collapsed; b2.Visibility = Visibility.Visible; }
+            if (CurrQues == questions.Last()) { Next.Visibility = Visibility.Collapsed; Finish.Visibility = Visibility.Visible; }
 
             Question.DataContext = CurrQues;
             ans1.DataContext = answers[0];

@@ -70,6 +70,7 @@
     <Compile Include="ApplicationViewModel.cs" />
     <Compile Include="Connect\SingletoneStudent.cs" />
     <Compile Include="Connect\SingletoneTeacher.cs" />
+    <Compile Include="Converters\GradeConverter.cs" />
     <Compile Include="Converters\NameConverter.cs" />
     <Compile Include="Converters\PercentConvert.cs" />
     <Compile Include="Groups.cs">

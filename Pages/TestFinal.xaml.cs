@@ -46,13 +46,14 @@ namespace Tests_application.Pages
             InitializeComponent();
 
             Result = (int)(Res * 100);
+            GradeNumber.DataContext = this;
             ResultForProgress = (int)(Res * 100);
             ResBlock.DataContext = this;
         }
 
         private void Window_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Action action = () => { Progress1.Value ++; ResForText += 0.01; };
+            Action action = () => { Progress1.Value++; ResForText += 0.01; };
             var task = new Task(() =>
             {
                 for (int i = 0; i < ResultForProgress; i++)
@@ -63,10 +64,10 @@ namespace Tests_application.Pages
             });
             task.Start();
 
-            if (Result > 80) { Grade.Background = Brushes.Green; Grade.Text = "5"; }
-            else if (Result > 60) { Grade.Background = Brushes.Green; Grade.Text = "4"; }
-            else if (Result > 40) { Grade.Background = Brushes.Orange; Grade.Text = "3"; }
-            else { Grade.Background = Brushes.Red; Grade.Text = "2"; }
+            //if (Result > 80) { Grade.Background = Brushes.Green; Grade.Text = "5"; }
+            //else if (Result > 60) { Grade.Background = Brushes.Green; Grade.Text = "4"; }
+            //else if (Result > 40) { Grade.Background = Brushes.Orange; Grade.Text = "3"; }
+            //else { Grade.Background = Brushes.Red; Grade.Text = "2"; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

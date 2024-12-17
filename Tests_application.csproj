@@ -111,6 +111,8 @@
     <Compile Include="Pages\AddUser.xaml.cs">
       <DependentUpon>AddUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\HelperClasses\Exercise.cs" />
+    <Compile Include="Pages\HelperClasses\ForListBox.cs" />
     <Compile Include="Pages\MainMenu_Admin.xaml.cs">
       <DependentUpon>MainMenu_Admin.xaml</DependentUpon>
     </Compile>

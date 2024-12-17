@@ -14,18 +14,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Tests_application.Connect;
+using Tests_application.Pages.HelperClasses;
 
 namespace Tests_application.Pages
 {
-    public class Exercise
-    {
-        public string Ques { get; set; }
-        public string Ans1 { get; set; }
-        public string Ans2 { get; set; }
-        public string Ans3 { get; set; }
-        public string Ans4 { get; set; }
-        public int CorrNum { get; set; }
-    }
 
     public partial class TestRedactor : Page
     {
@@ -131,10 +123,10 @@ namespace Tests_application.Pages
                (ListBoxItem)(TestsListBox.ItemContainerGenerator.ContainerFromItem(TestsListBox.Items.CurrentItem));
             ContentPresenter myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
             DataTemplate myDataTemplate = myContentPresenter.ContentTemplate;
-            RadioButton myRadio1 = (RadioButton)myDataTemplate.FindName("b1", myContentPresenter);
-            RadioButton myRadio2 = (RadioButton)myDataTemplate.FindName("b2", myContentPresenter);
-            RadioButton myRadio3 = (RadioButton)myDataTemplate.FindName("b3", myContentPresenter);
-            RadioButton myRadio4 = (RadioButton)myDataTemplate.FindName("b4", myContentPresenter);
+            RadioButton myRadio1 = (RadioButton)myDataTemplate.FindName("CheckAnswer1", myContentPresenter);
+            RadioButton myRadio2 = (RadioButton)myDataTemplate.FindName("CheckAnswer2", myContentPresenter);
+            RadioButton myRadio3 = (RadioButton)myDataTemplate.FindName("CheckAnswer3", myContentPresenter);
+            RadioButton myRadio4 = (RadioButton)myDataTemplate.FindName("CheckAnswer4", myContentPresenter);
 
             myRadio1.GroupName = $"v{Counter}";
             myRadio2.GroupName = $"v{Counter}";

@@ -22,28 +22,30 @@
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-            <Button Width="200" Height="50" VerticalAlignment="Center"  Content="Выйти из аккаунта" FontSize="18" Click="Button_Click" HorizontalAlignment="Left" Margin="10"/>
-            <TextBlock  VerticalAlignment="Center"  x:Name="UserName" FontSize="18" Grid.Column="1" HorizontalAlignment="Left" Margin="10"/>
-            <TextBlock  VerticalAlignment="Center"  x:Name="UserGroup" FontSize="18" Grid.Column="1" HorizontalAlignment="Right" Margin="10"  />
+            <Button  Content="Выйти из аккаунта" FontSize="20" Click="Button_Click" HorizontalAlignment="Left" Margin="10"/>
+            <TextBlock  x:Name="UserName" FontSize="20" Grid.Column="1" HorizontalAlignment="Left" Margin="10"/>
+            <TextBlock  x:Name="UserGroup" FontSize="20" Grid.Column="1" HorizontalAlignment="Right" Margin="10"  />
         </StackPanel>
 
-        <ListBox  x:Name="TestsListBox" Margin="0,0,10,10" Grid.Row="1" Grid.ColumnSpan="2" ScrollViewer.CanContentScroll="False">
+        <ListBox  x:Name="TestsListBox" Margin="10,0,10,10" Grid.Row="1" Grid.ColumnSpan="2" ScrollViewer.CanContentScroll="False">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Border BorderThickness="1" BorderBrush="Black" Width="700" Height="130" >
-                            <TextBlock Width="350" Height="50" Text="{Binding NameTest}" HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="24"/>
+                    <Grid Background="White" Width="740" Height="150">
+                        <Border BorderThickness="1" BorderBrush="Black" >
+                            <TextBlock Text="{Binding NameTest}" HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="24" VerticalAlignment="Center"/>
                         </Border>
-                        <Border  BorderThickness="1" BorderBrush="Black" Width="241" HorizontalAlignment="Right" Height="130" >
-                            <!--<local2:MyProgress x:Name="Progress1" Value="{Binding PerCompForProgress}" Margin="19,16,18,9" />-->
-                            <local:SemicircleProgressBar x:Name="Progress1"
-                                 Value="{Binding PerCompForProgress}" Minimum="0" Maximum="100"
-                                 CuttingFactor="0.8"
-                                 VerticalAlignment="Center" HorizontalAlignment="Center"
-                                 Height="100" Width="200"/>
+                        <Border  BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" Margin="0,0,20,0">
+                            <Grid>
+                                <local:SemicircleProgressBar x:Name="Progress1"
+                                Value="{Binding PerCompForProgress}" Minimum="0" Maximum="100"
+                                CuttingFactor="0.8" Margin="10"
+                                VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock TextAlignment="Center" FontSize="30" Text="{Binding PerComplete, Converter={StaticResource PercentConvert}}" x:Name="result" 
+                                VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                            </Grid>
                         </Border>
-                        <TextBlock TextAlignment="Center" FontSize="30" Margin="459,81,0,0" Text="{Binding PerComplete, Converter={StaticResource PercentConvert}}" x:Name="result"/>
                     </Grid>
+                    
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

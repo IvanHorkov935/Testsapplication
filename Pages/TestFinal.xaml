@@ -21,22 +21,24 @@
         </Grid.RowDefinitions>
         <TextBlock  TextAlignment="Center" Text="Результаты теста:" FontSize="36" Grid.Row="0"/>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20">
-            <Grid  Background="#FFE6E6E6" VerticalAlignment="Center">
+        <Grid Grid.Row="1" Margin="20">
+            <Grid  Background="#FFE6E6E6" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,40,0,40">
                 <local:SemicircleProgressBar x:Name="Progress1"
                     Value="0" Minimum="0" Maximum="100"
                     CuttingFactor="0.8"
-                    VerticalAlignment="Center" HorizontalAlignment="Center"
-                    Height="171" Width="276" Background="#FFFFFEFE"/>
-                <TextBlock  TextAlignment="Center" FontSize="36" x:Name="ResBlock" Text="{Binding ResForText, Converter={StaticResource PercentConvert}}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    Background="#FFFFFEFE"/>
+                <TextBlock  TextAlignment="Center" FontSize="36" x:Name="ResBlock" Text="{Binding ResForText, Converter={StaticResource PercentConvert}}" 
+                            VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
             </Grid>
-            <StackPanel Margin="200,0,0,0" VerticalAlignment="Center" x:Name="GradeNumber">
-                <TextBlock Height="42" Text="Ваша оценка:" TextAlignment="Center" FontSize="36" Margin="0,0,0,40"/>
-                <TextBlock Height="94" Width="159" Text="{Binding Result, ConverterParameter=1, Converter={StaticResource GradeConverter}}" 
-                           TextAlignment="Center" FontSize="72" Background="{Binding Result, ConverterParameter=2, Converter={StaticResource GradeConverter}}" Foreground="#FFF1F1F1" x:Name="Grade"/>
+            <StackPanel VerticalAlignment="Center" x:Name="GradeNumber" HorizontalAlignment="Right" Margin="0,0,30,0">
+                <TextBlock Text="Ваша оценка:" TextAlignment="Center" FontSize="36" Margin="0,0,0,20"/>
+                <TextBlock Text="{Binding Result, ConverterParameter=1, Converter={StaticResource GradeConverter}}" 
+                           TextAlignment="Center" FontSize="72" Background="{Binding Result, ConverterParameter=2, Converter={StaticResource GradeConverter}}" 
+                           Foreground="#FFF1F1F1" x:Name="Grade"/>
             </StackPanel>
-        </StackPanel>
+        </Grid>
   
-        <Button Grid.Row="2" Content="В меню" FontSize="24" Click="Button_Click" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10" Height="40" Width="100"/>
+        <Button Grid.Row="2" Content="В меню" FontSize="24" Click="Button_Click" VerticalAlignment="Bottom" 
+                HorizontalAlignment="Center" Margin="0,0,0,10" Padding="10"/>
     </Grid>
 </Page>

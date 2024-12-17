@@ -45,13 +45,15 @@ namespace Tests_application.Pages
 
         private void GroupListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ListTeachers != null || ListStudents != null) { ListTeachers.Clear(); ListStudents.Clear(); }
             CurrentGroup = GroupListBox.SelectedItem as Groups;
-            if (CurrentGroup == null) { AddMembers.IsEnabled = true; return; }
-            else { AddMembers.IsEnabled = true; }
+
+            if (ListTeachers != null || ListStudents != null) { ListTeachers.Clear(); ListStudents.Clear(); }
+            
+            if (CurrentGroup == null) { AddMembers.IsEnabled = false; return; }
+            else { AddMembers.IsEnabled = true; } 
 
             Title.Text = $"Состав группы [{CurrentGroup.Name}]:";
-            foreach (Users_Groups usergroup in Helper.connect.Users_Groups.Where(x => x.ID_Group == CurrentGroup.ID))
+            foreach (Users_Groups usergroup in CurrentGroup.Users_Groups)
             {
                 if (usergroup.Users.ID_Type == 2) { ListTeachers.Add(usergroup.Users); }
                 if (usergroup.Users.ID_Type == 3) { ListStudents.Add(usergroup.Users); }

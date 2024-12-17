@@ -20,7 +20,7 @@ namespace Tests_application
         public string TeacherName { get; set; }
         public ObservableCollection<User> UsersCollection { get; set; }
         public ObservableCollection<Results> UserResultsCollection { get; set; }
-        public ObservableCollection<Tests> UserTestsCollection { get; set; }
+        public List<Tests> UserTestsCollection { get; set; }
         public User SelectedUser
         {
             get { return selectedUser; }
@@ -37,13 +37,14 @@ namespace Tests_application
             CurrentGroup = Teacher.SelectedGroup;
             TeacherName = Teacher.CurrentUser.Full_Name;
 
-            UserTestsCollection = new ObservableCollection<Tests>();
+            UserTestsCollection = new List<Tests>();
             UserResultsCollection = new ObservableCollection<Results>();
             if(Teacher.Students.Count() == 0)
             {
                 foreach (var usergroups in Helper.connect.Users_Groups.Where(x => x.ID_Group == CurrentGroup.ID))
                 {
-                    if (Helper.connect.Users.First(x => x.ID == usergroups.ID).ID_Type == 3) { Teacher.Students.Add(Helper.connect.Users.First(x => x.ID == usergroups.ID)); }
+                    if (Helper.connect.Users.First(x => x.ID == usergroups.ID).ID_Type == 3) 
+                    { Teacher.Students.Add(Helper.connect.Users.First(x => x.ID == usergroups.ID)); }
                 }
             }
             

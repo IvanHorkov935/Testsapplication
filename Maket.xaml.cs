@@ -27,10 +27,10 @@ namespace Tests_application
         {
             InitializeComponent();
 
-            double com = 0.0;
-            Value = com.ToString("P0", CultureInfo.InvariantCulture);
-            //Progress1.Value = com * 100;
-            Perc.Text = Value;
+            //double com = 0.0;
+            //Value = com.ToString("P0", CultureInfo.InvariantCulture);
+            ////Progress1.Value = com * 100;
+            //Perc.Text = Value;
         }
     }
 }

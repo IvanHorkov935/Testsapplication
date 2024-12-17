@@ -17,18 +17,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Tests_application.Connect;
+using Tests_application.Pages.HelperClasses;
 
 namespace Tests_application.Pages
 {
-    public class ForListBox
-    {
-        public string NameTest { get; set; }
-        public double PerComplete { get; set; }
-        public int PerCompForProgress { get; set; }
-    }
     public partial class MainMenu_Student : Page
     {
-        ObservableCollection<Tests> StudentTests = new ObservableCollection<Tests>();
         ObservableCollection<ForListBox> TestsResults = new ObservableCollection<ForListBox>();
         SingletoneStudent Student;
         public MainMenu_Student()
@@ -41,15 +35,16 @@ namespace Tests_application.Pages
 
             foreach (Tests test in Student.CurrentUserTests)
             {
-                StudentTests.Add(test);
-            }
-
-            foreach(var i in StudentTests)
-            {
-                if (Helper.connect.Results.Where(x => x.ID_User == Student.CurrentUser.ID && x.ID_Test == i.ID).Count() == 0) { TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = 0 }); continue; }
-                var ResultsThisTest = Helper.connect.Results.Where(x => x.ID_Test == i.ID && x.ID_User == Student.CurrentUser.ID);
-                double percomp = (double)ResultsThisTest.Max(x => x.Per_Complete);
-                TestsResults.Add(new ForListBox { NameTest = i.Name, PerComplete = percomp, PerCompForProgress = (int)(percomp * 100) });
+                var results = Helper.connect.Results.Where(x => x.ID_User == Student.CurrentUser.ID && x.ID_Test == test.ID);
+                if (results.Count() == 0)
+                { 
+                    TestsResults.Add(new ForListBox { NameTest = test.Name, PerComplete = 0 }); 
+                }
+                else
+                {
+                    double? percomp = results.Max(x => x.Per_Complete);
+                    TestsResults.Add(new ForListBox { NameTest = test.Name, PerComplete = percomp, PerCompForProgress = (int)(percomp * 100) });
+                }
             }
 
             TestsListBox.ItemsSource = TestsResults;

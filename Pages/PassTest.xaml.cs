@@ -19,48 +19,17 @@ using Tests_application.Connect;
 
 namespace Tests_application.Pages
 {
-   
-    
     public partial class PassTest : Page, INotifyPropertyChanged
     {
-        private DateTime _startCountdown; 
-        private TimeSpan _startTimeSpan {  get; set; } 
-        private TimeSpan _timeToEnd; 
-        private TimeSpan _interval = TimeSpan.FromMilliseconds(15); 
-        private DispatcherTimer _timer;
-
-        public TimeSpan TimeToEnd
-        {
-            get
-            {
-                return _timeToEnd;
-            }
-
-            set
-            {
-                _timeToEnd = value;
-                if (value.TotalMilliseconds <= 0)
-                {
-                    StopTimer();
-                    //действия при окончании таймера
-                }
-
-                OnPropertyChanged("StringCountdown");
-            }
-        }
-
+        public DispatcherTimer timer;
+        public TimeSpan TimeToEnd;
         public string StringCountdown
         {
             get
             {
-                var frmt = TimeToEnd.Minutes < 1 ? "ss\\.ff" : "mm\\:ss";
-                return $"Оставшееся время: {_timeToEnd.ToString(frmt)}";
+                var frmt = "mm\\:ss";
+                return $"Оставшееся время: {TimeToEnd.ToString(frmt)}";
             }
-        }
-
-        public bool TimerIsEnabled
-        {
-            get { return _timer.IsEnabled; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -70,20 +39,6 @@ namespace Tests_application.Pages
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
         }
-
-        private void StopTimer()
-        {
-            if (TimerIsEnabled)
-                _timer.Stop();
-            TimeToEnd = _startTimeSpan;
-        }
-
-        private void StartTimer(DateTime sDate)
-        {
-            _startCountdown = sDate;
-            _timer.Start();
-        }
-
 
         public string CorrAns { get; set; }
         public List<Questions> questions;
@@ -98,6 +53,23 @@ namespace Tests_application.Pages
         public PassTest(Tests Test, Users CurrUser, TimeSpan Tend)
         {
             InitializeComponent();
+
+            TimeToEnd = Tend;
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += delegate
+            {
+                TimeToEnd -= TimeSpan.FromSeconds(1);
+                OnPropertyChanged("StringCountdown");
+                if (TimeToEnd == TimeSpan.Zero)
+                {
+                    timer.Stop();
+                    MessageBox.Show("Время вышло");
+                    Button_Click_1(null, null);
+                }
+            };
+            timer.Start();
+
             this.CurrUser = CurrUser;
             this.Test = Test;
 
@@ -105,17 +77,6 @@ namespace Tests_application.Pages
             Title.DataContext = Test;
 
             questions = Helper.connect.Questions.Where(x => x.ID_Test == Test.ID).ToList();
-
-            _startTimeSpan = Tend;
-            _timer = new DispatcherTimer();
-            _timer.Interval = _interval;
-            _timer.Tick += delegate
-            {
-                var now = DateTime.Now;
-                var elapsed = now.Subtract(_startCountdown);
-                TimeToEnd = _startTimeSpan.Subtract(elapsed);
-            };
-            StartTimer(DateTime.Now);
             Update_Question();
         }
         public void Update_Question()
@@ -126,10 +87,10 @@ namespace Tests_application.Pages
             if (CurrQues == questions.Last()) { Next.Visibility = Visibility.Collapsed; Finish.Visibility = Visibility.Visible; }
 
             Question.DataContext = CurrQues;
-            ans1.DataContext = answers[0];
-            ans2.DataContext = answers[1];
-            ans3.DataContext = answers[2];
-            ans4.DataContext = answers[3];
+            chek1.DataContext = answers[0];
+            chek2.DataContext = answers[1];
+            chek3.DataContext = answers[2];
+            chek4.DataContext = answers[3];
             chek1.IsChecked = false;
             chek2.IsChecked = false;
             chek3.IsChecked = false;
@@ -156,8 +117,8 @@ namespace Tests_application.Pages
             Helper.connect.Results.Add(new Results { ID_Test = Test.ID, ID_User = CurrUser.ID, Per_Complete = NumCorrAns / questions.Count()});
             
             //Helper.connect.SaveChanges();
-            double tem = (double)NumCorrAns / (double)questions.Count();
-            Helper.frame.Navigate(new TestFinal(tem));
+            double temp = NumCorrAns / questions.Count();
+            Helper.frame.Navigate(new TestFinal(temp));
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

@@ -14,18 +14,23 @@
     </Page.Resources>
 
     <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="0.6*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel  Grid.ColumnSpan="2" VerticalAlignment="Top" Height="60" Orientation="Horizontal" Margin="0,5,0,0">
+        
+        <StackPanel  Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Top" Height="60" Orientation="Horizontal" Margin="0,5,0,0">
             <Button Width="200" Height="50" VerticalAlignment="Center"  Content="Выйти из аккаунта" FontSize="20" Click="Button_Click" Margin="10,0,0,0"/>
             <Button Width="200" Height="50"  Content="Создать тест" FontSize="20" Click="Button_Click_1" VerticalAlignment="Center" Margin="5,0,0,0"/>
             <TextBlock Text="{Binding TeacherName}" TextAlignment="Center"  FontSize="24" x:Name="Acc" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0"/>
         </StackPanel>
 
         <ListBox ItemsSource="{Binding UsersCollection}"
-                 SelectedItem="{Binding SelectedUser}" VerticalAlignment="Top" HorizontalAlignment="Center" Width="490" Height="350" Margin="0,95,0,0" >
+                 SelectedItem="{Binding SelectedUser}" Grid.Row="1" Grid.Column="0" Margin="10">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">
@@ -36,27 +41,38 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel DataContext="{Binding SelectedUser}"  Grid.Column="1" VerticalAlignment="Top" Margin="10,80,10,0">
-            <TextBlock Text="Выбранный ученик" Margin="0,0,0,10" />
-            <TextBlock Text="ФИО" />
-            <TextBlock Text="{Binding Full_Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
-            <TextBlock Text="№ Группы" />
-            <TextBlock Text="{Binding ID_Group, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
-            <TextBlock Text="Логин" />
-            <TextBlock Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
-        </StackPanel>
-        <ListBox x:Name="results" ItemsSource="{Binding UserResultsCollection, UpdateSourceTrigger=PropertyChanged}" 
-                 VerticalAlignment="Bottom" Height="228" Grid.Column="1" Margin="0,0,5,5" ScrollViewer.CanContentScroll="False">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="5">
-                        <TextBlock Text="Название теста:" Margin="0,0,3,0" />
-                        <TextBlock Text="{Binding ID_Test, Converter={StaticResource NameConverter}}" Margin="0,0,8,0" />
-                        <TextBlock Text="Процент выполнения:" Margin="0,0,3,0" />
-                        <TextBlock Text="{Binding Per_Complete, Converter={StaticResource PercentConvert}}" Margin="0,0,8,0" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel DataContext="{Binding SelectedUser}" Grid.Row="0" VerticalAlignment="Top">
+                <TextBlock Text="Выбранный ученик" Margin="0,0,0,10" />
+                <TextBlock Text="ФИО" />
+                <TextBlock Text="{Binding Full_Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
+                <TextBlock Text="№ Группы" />
+                <TextBlock Text="{Binding ID_Group, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
+                <TextBlock Text="Логин" />
+                <TextBlock Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" />
+            </StackPanel>
+
+            <ListBox x:Name="results" ItemsSource="{Binding UserResultsCollection, UpdateSourceTrigger=PropertyChanged}" 
+                    ScrollViewer.CanContentScroll="False" Grid.Row="1" Margin="0,0,10,10">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5">
+                            <TextBlock Text="Название теста:" Margin="0,0,3,0" />
+                            <TextBlock Text="{Binding ID_Test, Converter={StaticResource NameConverter}}" Margin="0,0,8,0" />
+                            <TextBlock Text="Процент выполнения:" Margin="0,0,3,0" />
+                            <TextBlock Text="{Binding Per_Complete, Converter={StaticResource PercentConvert}}" Margin="0,0,8,0" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        
+        
     </Grid>
 </Page>

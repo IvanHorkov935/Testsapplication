@@ -8,18 +8,40 @@
         Title="AddGroup" d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="10" Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="2*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Введите название новой группы:" FontSize="14"  Grid.ColumnSpan="2" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
-        <TextBox  FontSize="14" Grid.ColumnSpan="2"  x:Name="gname" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="300" Height="30"/>
-        <WrapPanel Grid.Row="1" HorizontalAlignment="Right"  Width="195" Grid.Column="1" VerticalAlignment="Bottom" Height="35">
-            <Button  Click="Accept_Click" MinWidth="60" Margin="0,0,10,0" Width="90" Height="30" FontSize="16">OK</Button>
-            <Button  MinWidth="60" Width="90" Height="30" FontSize="16" Click="Cancel_Click">Отмена</Button>
-        </WrapPanel>
+        <Grid Grid.ColumnSpan="2" Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Введите название новой группы:" FontSize="24"  HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1"/>
+            <TextBox  FontSize="24" x:Name="gname"  Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,20"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="10" FlowDirection="RightToLeft">
+                <Button x:Name="button"  FontSize="16" Click="Cancel_Click" Padding="35,1,35,1">Отмена</Button>
+                <Button  Click="Accept_Click" FontSize="16" Margin="20,0,0,0" Width="{Binding ActualWidth, ElementName=button, Mode=OneWay}" >OK</Button>
+            </StackPanel>-->
+            <Button  Click="Accept_Click"   FontSize="16"  Grid.Row="2" Grid.Column="0" Margin="10">OK</Button>
+            <Button  FontSize="16" Click="Cancel_Click"  Grid.Row="2" Grid.Column="1" Margin="10">Отмена</Button>
+        </Grid>
     </Grid>
 </Page>

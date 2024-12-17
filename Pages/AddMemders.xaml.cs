@@ -45,11 +45,11 @@ namespace Tests_application.Pages
                 if (user.ID_Type == 1) { continue; }
                 UnknownUsers.Add(user);
             }
-            ListUnallocated.ItemsSource = UnknownUsers;
+            ListUnknown.ItemsSource = UnknownUsers;
         }
         private void ListUnallocated_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Users user = ListUnallocated.SelectedItem as Users;
+            Users user = ListUnknown.SelectedItem as Users;
             if(user == null) {  return; }
             UnknownUsers.Remove(user);
             if(user.ID_Type == 2) { CurrentTeachers.Add(user);}

@@ -8,34 +8,50 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PassTest">
 
-    <Grid Background="White" x:Name="a">
+    <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="110"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock  FontSize="18" x:Name="Title" Text="{Binding Name}" Margin="10,0,0,40" VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Row="0"/>
-        <TextBlock Height="46" FontSize="18" x:Name="Time" Text="{Binding StringCountdown}" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,20,40"/>
-        <StackPanel  x:Name="Question" Grid.Row="0" Margin="0,62,0,0">
-            <TextBlock FontSize="18" Text="{Binding Path=Contents}" Height="60" TextAlignment="Center"/>
+        <StackPanel>
+            <Grid Margin="0,0,0,5">
+                <TextBlock FontSize="18" x:Name="Title" Text="{Binding Name}" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <TextBlock FontSize="18" x:Name="Time" Text="{Binding StringCountdown}" VerticalAlignment="Top" 
+                           HorizontalAlignment="Right"  Margin="0,10,10,0"/>
+            </Grid>
+            <StackPanel x:Name="Question" VerticalAlignment="Bottom" >
+                <TextBlock FontSize="18" Text="{Binding Path=Contents}" Height="60" TextAlignment="Center"/>
+            </StackPanel>
         </StackPanel>
 
-        <StackPanel  Orientation="Horizontal" x:Name="ans1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,30,0,0">
-            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek1" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
-        </StackPanel>
-        <StackPanel  Orientation="Horizontal" x:Name="ans2" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,10,0">
-            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek2" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
-        </StackPanel>
-        <StackPanel  Orientation="Horizontal" x:Name="ans3"  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,30">
-            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek3" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
-        </StackPanel>
-        <StackPanel  Orientation="Horizontal" x:Name="ans4" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,30">
-            <RadioButton Width="280" Height="55" Margin="40,0,10,0" x:Name="chek4" Checked="chek_Checked" IsChecked="False" Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
-        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <Button x:Name="Next" Height="50" Margin="10,20,0,10" HorizontalAlignment="Left" Width="169" Content="Ответить" FontSize="22" Click="Button_Click" Grid.Row="2"/>
-        <Button x:Name="Finish" Width="169" Height="50" Margin="10,20,0,10" HorizontalAlignment="Left" Content="Завершить" FontSize="22" Click="Button_Click_1" Grid.Row="2" Visibility="Collapsed" />
-        <Button  Content="В меню" FontSize="22" Click="Button_Click_2" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" Height="50" Width="130"/>
+            <RadioButton Margin="30" x:Name="chek1" Checked="chek_Checked" IsChecked="False" Grid.Row="0" Grid.Column="0"
+                         Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
+            <RadioButton Margin="30" x:Name="chek2" Checked="chek_Checked" IsChecked="False" Grid.Row="1" Grid.Column="0"
+                         Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
+            <RadioButton Margin="30" x:Name="chek3" Checked="chek_Checked" IsChecked="False" Grid.Row="0" Grid.Column="1"
+                         Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
+            <RadioButton Margin="30" x:Name="chek4" Checked="chek_Checked" IsChecked="False" Grid.Row="1" Grid.Column="1"
+                         Content="{Binding Path=Contents}" GroupName="Radio" FontSize="16" VerticalContentAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Button x:Name="Next" Content="Ответить" FontSize="22" Click="Button_Click" Grid.Row="2" 
+                    HorizontalAlignment="Left" Margin="10,0,0,10" Padding="10"/>
+            <Button x:Name="Finish" Content="Завершить" FontSize="22" Click="Button_Click_1" 
+                    Grid.Row="2" Visibility="Collapsed" HorizontalAlignment="Left" Margin="10,0,0,10" Padding="10"/>
+            <Button Content="В меню" FontSize="22" Click="Button_Click_2" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,10,10" Padding="10"/>
+        </Grid>
     </Grid>
 </Page>

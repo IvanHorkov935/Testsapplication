@@ -16,8 +16,8 @@
         <StackPanel VerticalAlignment="Center" Grid.Row="0">
             <TextBlock HorizontalAlignment="Center" Text="Выберите группу" FontSize="36"/>
         </StackPanel>
-        <StackPanel x:Name="stackPanel" Grid.Row="1">
-            <ListBox  x:Name="GroupsListBox"  Height="333" SelectionChanged="GroupsListBox_SelectionChanged"  >
+        <Grid x:Name="stackPanel" Grid.Row="1" Margin="10">
+            <ListBox  x:Name="GroupsListBox" SelectionChanged="GroupsListBox_SelectionChanged"  >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
@@ -27,6 +27,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>

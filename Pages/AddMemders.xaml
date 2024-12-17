@@ -14,36 +14,51 @@
             <ColumnDefinition Width="120"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
-        <Button  Content="Назад" FontSize="22" Click="Button_Click" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,0,0" Height="50"/>
-        
-        <Button Height="50"  Content="Сохранить" FontSize="20" Click="Button_Click_1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="100,20,0,0"/>
 
-        <!--<ComboBox  x:Name="combo" SelectionChanged="combo_SelectionChanged" SelectedValue="{Binding ID}" DisplayMemberPath="Full_Name" SelectedValuePath="ID" Grid.Column="2"  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,20,0" Width="130" Height="25"/>
-        <TextBlock  Text="Руководитель:" FontSize="16"  Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,155,0"/>-->
+        <Grid  Margin="10" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Row="0">
+                <Button Content="Назад" FontSize="22" Click="Button_Click" Margin="0,0,30,0" Padding="30,1,30,1"/>
+                <Button Content="Сохранить" FontSize="22" Click="Button_Click_1" Padding="10,1,10,1"/>
+            </StackPanel>
 
+            <ListBox  x:Name="ListUnknown" SelectionChanged="ListUnallocated_SelectionChanged" Grid.Row="1" Margin="0,10,0,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="5" Orientation="Horizontal">
+                            <TextBlock Text="ФИО:" Margin="3" FontSize="14" />
+                            <TextBlock Text="{Binding Full_Name}" Margin="3" FontSize="14" />
+                            <TextBlock Text=" | " FontSize="14" Margin="3,3,3,3"/>
+                            <TextBlock Text="{Binding Path=Users_Types.Name}" FontSize="14" Margin="3,3,3,3"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        
         <Image  Source="Resourses/free-icon-two-arrows-pointing-opposite-sides-60671.png" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
 
-        <ListBox  x:Name="ListUnallocated" SelectionChanged="ListUnallocated_SelectionChanged" Margin="0,84,0,0">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="5" Orientation="Horizontal">
-                        <TextBlock Text="ФИО:" Margin="3" FontSize="14" />
-                        <TextBlock Text="{Binding Full_Name}" Margin="3" FontSize="14" />
-                        <TextBlock Text=" | " FontSize="14" Margin="3,3,3,3"/>
-                        <TextBlock Text="{Binding Path=Users_Types.Name}" FontSize="14" Margin="3,3,3,3"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Grid Grid.Column="2" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="2" Height="450">
-            <StackPanel  Orientation="Horizontal" x:Name="GroupName"  Margin="0,10,0,0" >
-                <TextBlock Width="83" Text="Группа:" TextAlignment="Center" Height="28" FontSize="18"/>
-                <TextBlock Width="51" FontSize="18" Height="28" TextAlignment="Left" Text="{Binding}"/>
+            <StackPanel VerticalAlignment="Top" Grid.Row="0">
+                <StackPanel  Orientation="Horizontal" x:Name="GroupName" >
+                    <TextBlock  Text="Группа:" TextAlignment="Center" Height="28" FontSize="18"/>
+                    <TextBlock  FontSize="18" Height="28" TextAlignment="Left" Text="{Binding}" Margin="5,0,0,0"/>
+                </StackPanel>
+                <TextBlock Text="Учителя:" HorizontalAlignment="Center" FontSize="16"/>
             </StackPanel>
-            <TextBlock Text="Учителя:" HorizontalAlignment="Center" FontSize="16"/>
-            <ListBox  x:Name="ListCurrentTeachers" SelectionChanged="ListCurrentTeachers_SelectionChanged" Grid.Column="2" Height="180" Margin="0,5,0,0">
+
+            <ListBox  x:Name="ListCurrentTeachers" SelectionChanged="ListCurrentTeachers_SelectionChanged" Grid.Row="1">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="5" Orientation="Horizontal">
@@ -55,8 +70,9 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <TextBlock Text="Ученики:" HorizontalAlignment="Center" FontSize="16"/>
-            <ListBox  x:Name="ListCurrentStudents" SelectionChanged="ListCurrentStudents_SelectionChanged" Grid.Column="2" Height="180" Margin="0,5,0,0">
+
+            <TextBlock Text="Ученики:" HorizontalAlignment="Center" FontSize="16" Grid.Row="2"/>
+            <ListBox  x:Name="ListCurrentStudents" SelectionChanged="ListCurrentStudents_SelectionChanged" Grid.Row="3">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="5" Orientation="Horizontal">
@@ -68,7 +84,6 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
-        
+        </Grid>
     </Grid>
 </Page>

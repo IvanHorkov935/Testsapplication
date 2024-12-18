@@ -8,6 +8,35 @@
       d:DesignHeight="300" d:DesignWidth="800"
       Title="Maket" >
 
+    <Grid Background="White" Width="780" Height="150">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border BorderThickness="1" BorderBrush="Black">
+            <TextBlock Text="{Binding NameTest}" Margin="20,0,0,0" FontSize="24" VerticalAlignment="Center" TextWrapping="Wrap" />
+        </Border>
+        <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
+            <StackPanel Margin="10" Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="{Binding TimeToComplete}" FontSize="20"/>
+                <TextBlock Text="{Binding Attempts}" FontSize="20"/>
+            </StackPanel>
+        </Border>
+
+        <Border  BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="2">
+            <Grid>
+                <local2:SemicircleProgressBar x:Name="Progress1"
+Value="{Binding PerCompForProgress}" Minimum="0" Maximum="100"
+CuttingFactor="0.8" Margin="5" 
+VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="255" MinHeight="128"/>
+                <TextBlock TextAlignment="Center" FontSize="30" Text="{Binding PerComplete}" x:Name="result" 
+VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            </Grid>
+        </Border>
+    </Grid>
+
     <!--<Grid Background="White " Width="780" Height="150">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -28,7 +57,7 @@
         </Border>
     </Grid>-->
 
-    <Grid Background="White">
+    <!--<Grid Background="White">
         <Border BorderBrush="Black" BorderThickness="1"  Margin="2">
             <StackPanel Margin="5" Orientation="Horizontal">
                 <TextBlock Text="ФИО:" Margin="3" FontSize="14" />
@@ -36,5 +65,5 @@
                 <TextBlock Text="{Binding Path=Users_Types.Name}" Margin="3" FontSize="14" />
             </StackPanel>
         </Border>
-    </Grid>
+    </Grid>-->
 </Page>

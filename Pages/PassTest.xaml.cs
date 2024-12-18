@@ -50,11 +50,11 @@ namespace Tests_application.Pages
 
         public Users CurrUser;
         public Tests Test;
-        public PassTest(Tests Test, Users CurrUser, TimeSpan Tend)
+        public PassTest(Tests Test, Users CurrUser, TimeSpan? Tend)
         {
             InitializeComponent();
 
-            TimeToEnd = Tend;
+            TimeToEnd = (TimeSpan)Tend;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += delegate
@@ -103,7 +103,7 @@ namespace Tests_application.Pages
             if (SelectedValue == CorrAns)
             {
                 NumCorrAns++;
-                
+
             }
             Update_Question();
         }
@@ -115,9 +115,9 @@ namespace Tests_application.Pages
                 NumCorrAns++;   
             }
             Helper.connect.Results.Add(new Results { ID_Test = Test.ID, ID_User = CurrUser.ID, Per_Complete = NumCorrAns / questions.Count()});
-            
+
             //Helper.connect.SaveChanges();
-            double temp = NumCorrAns / questions.Count();
+            double temp = (double)NumCorrAns / (double)questions.Count();
             Helper.frame.Navigate(new TestFinal(temp));
         }
 

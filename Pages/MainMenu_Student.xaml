@@ -10,6 +10,9 @@
 
     <Page.Resources>
         <local1:PercentConvert x:Key="PercentConvert"/>
+        <DataTemplate x:Key="lvDataTemplate">
+            <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+        </DataTemplate>
     </Page.Resources>
 
     <Grid Background="White">
@@ -27,25 +30,43 @@
             <TextBlock  x:Name="UserGroup" FontSize="20" Grid.Column="1" HorizontalAlignment="Right" Margin="10"  />
         </StackPanel>
 
-        <ListBox  x:Name="TestsListBox" Margin="10,0,10,10" Grid.Row="1" Grid.ColumnSpan="2" ScrollViewer.CanContentScroll="False">
+        <ListBox  x:Name="TestsListBox" Margin="10,0,10,10" Grid.Row="1" Grid.ColumnSpan="2" ScrollViewer.CanContentScroll="False" 
+                  HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Margin" Value="1"/>
+                    <Setter Property="Padding" Value="1"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="White" Width="740" Height="150">
-                        <Border BorderThickness="1" BorderBrush="Black" >
-                            <TextBlock Text="{Binding NameTest}" HorizontalAlignment="Left" Margin="20,0,0,0" FontSize="24" VerticalAlignment="Center"/>
+                    <Grid Background="White">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderThickness="1" BorderBrush="Black">
+                            <TextBlock Text="{Binding NameTest}" Margin="10" FontSize="24" VerticalAlignment="Center" TextWrapping="Wrap" />
                         </Border>
-                        <Border  BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" Margin="0,0,20,0">
+                        <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
+                            <StackPanel Margin="10" Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding TimeToComplete}" FontSize="20"/>
+                                <TextBlock Text="{Binding Attempts}" FontSize="20"/>
+                            </StackPanel>
+                        </Border>
+                        <Border  BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Right" Margin="0,0,10,0" Grid.Column="2">
                             <Grid>
                                 <local:SemicircleProgressBar x:Name="Progress1"
-                                Value="{Binding PerCompForProgress}" Minimum="0" Maximum="100"
-                                CuttingFactor="0.8" Margin="10"
-                                VerticalAlignment="Center" HorizontalAlignment="Center"/>
+Value="{Binding PerCompForProgress}" Minimum="0" Maximum="100"
+CuttingFactor="0.8" Margin="5" 
+VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="230" MinHeight="128"/>
                                 <TextBlock TextAlignment="Center" FontSize="30" Text="{Binding PerComplete, Converter={StaticResource PercentConvert}}" x:Name="result" 
-                                VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
                             </Grid>
                         </Border>
                     </Grid>
-                    
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

@@ -38,12 +38,14 @@ namespace Tests_application.Pages
                 var results = Helper.connect.Results.Where(x => x.ID_User == Student.CurrentUser.ID && x.ID_Test == test.ID);
                 if (results.Count() == 0)
                 { 
-                    TestsResults.Add(new ForListBox { NameTest = test.Name, PerComplete = 0 }); 
+                    TestsResults.Add(new ForListBox { NameTest = test.Name, PerComplete = 0, TimeToComplete=test.LeadTime.ToString(), Attempts=$"Попытки:{test.NumAttempts.ToString()}" }); 
                 }
                 else
                 {
                     double? percomp = results.Max(x => x.Per_Complete);
-                    TestsResults.Add(new ForListBox { NameTest = test.Name, PerComplete = percomp, PerCompForProgress = (int)(percomp * 100) });
+                    int? attempts = test.NumAttempts - results.Count();
+                    TestsResults.Add(new ForListBox { NameTest = test.Name, PerComplete = percomp,
+                        PerCompForProgress = (int)(percomp * 100), TimeToComplete = test.LeadTime.ToString(), Attempts=$"Попытки ={attempts.ToString()}"});
                 }
             }
 
@@ -57,9 +59,16 @@ namespace Tests_application.Pages
 
         private void LBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var test = TestsListBox.SelectedItem as ForListBox;
-            Tests Test = Helper.connect.Tests.First(x => x.Name == test.NameTest);
-            Helper.frame.Navigate(new PassTest(Test, Student.CurrentUser,  TimeSpan.FromMinutes(5)));
+            var result = TestsListBox.SelectedItem as ForListBox;
+            Tests Test = Student.CurrentUserTests.First(x => x.Name == result.NameTest);
+            if(Student.CurrentUser.Results.Where(x => x.ID_Test == Test.ID).Count() < Test.NumAttempts)
+            {
+                Helper.frame.Navigate(new PassTest(Test, Student.CurrentUser, Test.LeadTime));
+            }
+            else
+            {
+                MessageBox.Show("Все попытки израсходованы");
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

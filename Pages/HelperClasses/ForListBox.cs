@@ -11,5 +11,7 @@ namespace Tests_application.Pages.HelperClasses
         public string NameTest { get; set; }
         public double? PerComplete { get; set; }
         public int PerCompForProgress { get; set; }
+        public string TimeToComplete { get; set; }
+        public string Attempts {  get; set; }
     }
 }
